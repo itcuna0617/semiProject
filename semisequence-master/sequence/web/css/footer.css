@@ -1,0 +1,71 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+footer {
+	border-top: 1px solid #4b4b4b;
+	padding: 20px 300px 20px 300px;
+	margin-top: 50px;
+}
+
+.footerTitle {
+	font-family: 'MinSans-Medium';
+	font-style: italic;
+	font-size: 40px;
+	color: #4b4b4b;
+	margin-bottom: 20px;
+	display: inline-block;
+}
+
+.footerTilteA {
+	display: inline-block;
+	margin-bottom: 20px;
+}
+
+.footerTilteA a {
+	font-family: 'MinSans-Medium';
+	font-size: 13px;
+	color: #4b4b4b;
+	text-decoration: none;
+	margin-right: 5px;
+}
+
+.footerTilteA a:hover {
+	color: gray;
+}
+
+.companyInfo li {
+	font-family: 'MinSans-Medium';
+	font-size: 10px;
+	margin-bottom: 5px;
+}
+
+.serviceCenterList {
+	font-family: 'MinSans-Medium';
+	color: #4b4b4b;
+	float: right;
+}
+
+.serviceCenterList li {
+	margin-bottom: 5px;
+}
+
+.serviceCenterList li a {
+	color: #4b4b4b;
+	text-decoration: none;
+}
+
+.serviceCenterList li a:hover {
+	color:gray;
+}
+
+.serviceCenterList li h3{
+	font-weight: bold;
+}
+
+

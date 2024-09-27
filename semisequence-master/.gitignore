@@ -1,0 +1,20 @@
+Servers/.project
+Servers/.settings/org.eclipse.wst.server.core.prefs
+Servers/Apache Tomcat v8.5  at localhost-config/catalina.policy
+Servers/Apache Tomcat v8.5  at localhost-config/catalina.properties
+Servers/Apache Tomcat v8.5  at localhost-config/context.xml
+Servers/Apache Tomcat v8.5  at localhost-config/server.xml
+Servers/Apache Tomcat v8.5  at localhost-config/tomcat-users.xml
+Servers/Apache Tomcat v8.5  at localhost-config/web.xml
+sequence/web/resources/upload/original/file/24141478768042409091390fd995e3ee.docx
+sequence/web/resources/upload/original/file/9e06e1ca2aae4561b64474f199ff3c3b.xlsx
+sequence/web/resources/upload/original/img/4857d33ed6fe4661abd8889c4dfb84f8.png
+sequence/web/resources/upload/thumbnail/thumbnail_4857d33ed6fe4661abd8889c4dfb84f8.png
+sequence/web/WEB-INF/lib/commons-fileupload-1.3.3.jar
+sequence/web/WEB-INF/lib/commons-io-2.4.jar
+sequence/web/WEB-INF/lib/commons-logging-1.2.jar
+sequence/web/WEB-INF/lib/cos-05Nov2002.jar
+sequence/web/WEB-INF/lib/log4jdbc-1.2.jar
+sequence/web/WEB-INF/lib/thumbnailator-0.4.8.jar
+dev/
+.metadata/

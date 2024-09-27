@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="NoticeDAObyAdmin">
+    <resultMap type="admin.notice.model.DTO.NoticeDTO" id="noticeResultMap">
+      <id property="noticeNo" column="NOTICE_NO"/>
+      <result property="noticeTitle" column="NOTICE_TITLE"/>
+      <result property="noticeContent" column="NOTICE_CONTENT"/>
+      <result property="noticeActiveYN" column="NOTICE_ACTIVE_YN"/>
+      <result property="noticeDate" column="NOTICE_DATE"/>
+      <result property="adminId" column="ADMIN_ID"/>
+   </resultMap>
+    
+    <select id="selectTotalNotice" resultType="_int">
+       SELECT
+             COUNT(*)
+         FROM TBL_NOTICE A
+        WHERE A.NOTICE_ACTIVE_YN = 'Y'
+    </select>
+    
+    <select id="selectNoticeList" resultMap="noticeResultMap" parameterType="hashMap">
+        SELECT
+               C.NOTICE_NO
+             , C.NOTICE_TITLE
+             , C.NOTICE_CONTENT
+             , C.NOTICE_ACTIVE_YN
+             , C.NOTICE_DATE
+             , C.ADMIN_ID
+          FROM (SELECT
+                     ROWNUM R
+                   , A.NOTICE_NO
+                   , A.NOTICE_TITLE
+                   , A.NOTICE_CONTENT
+                   , A.NOTICE_ACTIVE_YN
+                   , A.NOTICE_DATE
+                   , A.ADMIN_ID
+                FROM (SELECT B.NOTICE_NO
+                          , B.NOTICE_TITLE
+                          , B.NOTICE_CONTENT
+                          , B.NOTICE_ACTIVE_YN
+                          , B.NOTICE_DATE
+                          , B.ADMIN_ID
+                         FROM TBL_NOTICE B
+                        WHERE B.NOTICE_ACTIVE_YN = 'Y'
+                        ORDER BY B.NOTICE_NO DESC) A) C
+         <![CDATA[
+         WHERE C.R <= #{ endSelect }
+           AND C.R >= #{ startSelect }
+         ]]>
+    </select>
+    
+    <select id="selectNoticeDetail" resultMap="noticeResultMap" parameterType="_int">
+      SELECT B.NOTICE_NO
+             , B.NOTICE_TITLE
+             , B.NOTICE_CONTENT
+             , B.NOTICE_ACTIVE_YN
+             , B.NOTICE_DATE
+             , B.ADMIN_ID
+            FROM TBL_NOTICE B
+           WHERE B.NOTICE_NO = #{ noticeNo } 
+    </select>
+    
+    <update id="updateNoticeByAdmin" parameterType="admin.notice.model.DTO.NoticeDTO">
+       UPDATE
+               TBL_NOTICE B
+         SET B.NOTICE_TITLE = #{ noticeTitle }
+             , B.NOTICE_CONTENT = #{ noticeContent }
+           WHERE B.NOTICE_NO = #{ noticeNo } 
+   </update>
+   
+   <update id="deleteNoticeByAdmin" parameterType="_int">
+      UPDATE
+            TBL_NOTICE A
+         SET A.NOTICE_ACTIVE_YN = 'N'
+       WHERE A.NOTICE_NO = #{ noticeNo }
+   </update>
+   
+   <insert id="insertNoticeByAdmin" parameterType="admin.notice.model.DTO.NoticeDTO">
+      INSERT
+        INTO TBL_NOTICE A
+      (
+        NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT
+      , NOTICE_ACTIVE_YN, NOTICE_DATE, ADMIN_ID
+      )
+      VALUES
+      (
+        SEQ_TBL_NOTICE.nextval, #{ noticeTitle }, #{ noticeContent }
+      , 'Y' , SYSDATE, 'ADMIN01'   
+      )
+   </insert>
+    
+ </mapper>

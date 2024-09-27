@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PostingDAO">
+	<resultMap type="posting.model.dto.PostingDTO" id="postingResultMap">
+		<id property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDetail" column="POSTING_DETAIL"/>
+		<result property="postingOpenYN" column="POSTING_OPEN_YN"/>
+		<result property="postingDeleteYN" column="POSTING_DELETE_YN"/>
+		<result property="views" column="VIEWS"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+		<result property="projectNo" column="PROJECT_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="userNo" column="USER_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
+		<result property="genreName" column="JOB_NAME"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="entName" column="ENT_NAME"/>
+	</resultMap>
+	
+		<resultMap type="posting.model.dto.PostingDTO" id="postingIncludeProjectNameDTO">
+		<id property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDetail" column="POSTING_DETAIL"/>
+		<result property="postingOpenYN" column="POSTING_OPEN_YN"/>
+		<result property="postingDeleteYN" column="POSTING_DELETE_YN"/>
+		<result property="views" column="VIEWS"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+		<result property="projectNo" column="PROJECT_NO"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+		<association property="project" resultMap="projectResultMap"></association>
+	</resultMap>
+	
+	<resultMap type="project.model.dto.ProjectDTO" id="projectResultMap">
+		<id property="projectNo" column="PROJECT_NO"/>
+		<result property="projectName" column="PROJECT_NAME"/>
+		<result property="projectContent" column="PROJECT_CONTENT"/>
+		<result property="projectStartDate" column="PROJECT_START_DATE"/>
+		<result property="projectEndDate" column="PROJECT_END_DATE"/>
+		<result property="projectActiveYN" column="PROJECT_ACTIVE_YN"/>
+		<result property="managerName" column="MANAGER_NAME"/>
+		<result property="managerPhone" column="MANAGER_PHONE"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+	</resultMap>
+	
+	
+	<resultMap type="posting.model.dto.GenreDTO" id="genreCategoryResultMap">
+		<id property="genreNo" column="GENRE_NO"/>
+		<result property="genreName" column="GENRE_NAME"/>	
+	</resultMap>
+	
+	<resultMap type="posting.model.dto.JobDTO" id="jobCategoryResultMap">
+		<id property="jobNo" column="JOB_NO"/>
+		<result property="jobName" column="JOB_NAME"/>	
+	</resultMap>
+	
+	<resultMap type="user.model.dto.UserInfoDTO" id="userInfoResultMap">
+	    <id property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPassword" column="USER_PASSWORD"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userBalance" column="USER_BALANCE"/>
+		<result property="userAvgScore" column="USER_AVG_SCORE"/>
+		<result property="userDropYn" column="USER_DROP_YN"/>
+		<result property="userSanctionYn" column="USER_SANCTION_YN"/>
+		<result property="userActiveYn" column="USER_ACTIVE_YN"/>
+		<result property="userClassName" column="USER_CLASS_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.EntDTO" id="entInfoResultMap">
+		<id property="entNo" column="ENT_NO"/>
+		<result property="entName" column="ENT_NAME"/>
+		<result property="entId" column="ENT_ID"/>
+		<result property="entPwd" column="ENT_PWD"/>
+		<result property="entPhone" column="ENT_PHONE"/>
+		<result property="entEmail" column="ENT_EMAIL"/>
+		<result property="entDropYn" column="ENT_DROP_YN"/>
+		<result property="entSanctionYn" column="ENT_SANCTION_YN"/>
+		<result property="entActiveYn" column="ENT_ACTIVE_YN"/>
+	</resultMap>
+	
+
+	<resultMap type="posting.model.dto.PostingAndProjectDTO" id="postingAndProjectResultMap">
+		<id property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDetail" column="POSTING_DETAIL"/>
+		<result property="postingOpenYN" column="POSTING_OPEN_YN"/>
+		<result property="views" column="VIEWS"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+		<result property="projectNo" column="PROJECT_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="userNo" column="USER_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>	
+		<result property="projectName" column="PROJECT_NAME"/>
+		<result property="projectContent" column="PROJECT_CONTENT"/>
+		<result property="projectStartDate" column="PROJECT_START_DATE"/>
+		<result property="projectEndDate" column="PROJECT_END_DATE"/>
+		<result property="projectActiveYN" column="PROJECT_ACTIVE_YN"/>
+		<result property="managerName" column="MANAGER_NAME"/>
+		<result property="managerPhone" column="MANAGER_PHONE"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="jobName" column="JOB_NAME"/>
+		<result property="genreName" column="GENRE_NAME"/>
+		<result property="entPhotoSavedPath" column="ENT_PHOTO_SAVED_PATH"/>
+		<result property="entPhotoSavedName" column="ENT_PHOTO_SAVED_NAME"/>
+		<result property="entProfNo" column="ENT_PROF_NO"/>
+	</resultMap>
+		
+	<resultMap type="posting.model.dto.ApplicationDTO" id="ApplicationResultMap">
+		<id property="applicationNo" column="APPLICATION_NO"/>
+		<result property="applicationConnectYN" column="APPLICATION_CONNECT_YN"/>
+		<result property="applicationDate" column="APPLICATION_DATE"/>
+		<result property="applicationIntro" column="APPLICATION_INTRO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="postingNo" column="POSTING_NO"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+	</resultMap>
+	
+	<resultMap type="posting.model.dto.UserProfileDTO" id="userProfileResultMap">
+		<id property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userPhoto" column="USER_PHOTO"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userArea" column="USER_AREA"/>
+		<result property="userMiniTitle" column="USER_MINI_TITLE"/>
+		<result property="userMainText" column="USER_MAIN_TEXT"/>
+		<result property="userResume" column="USER_RESUME"/>
+		<result property="userOpenYN" column="USER_OPEN_YN"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userSactionYN" column="USER_SACTION_YN"/>
+		<result property="userActionYN" column="USER_ACTION_YN"/>
+	</resultMap>
+	
+	<select id="selectUserProfile" resultMap="userProfileResultMap">
+	    SELECT
+		       A.USER_MINI_TITLE
+		     , A.USER_PROFILE_NO
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_USER_INFO B ON (A.USER_NO = B.USER_NO)
+		 WHERE B.USER_ID = #{ userId }
+		   AND A.USER_OPEN_YN = 'Y'
+	</select>
+	
+	<update id="incrementPostingCount">
+        UPDATE 
+               TBL_POSTING A
+           SET A.VIEWS = (SELECT B.VIEWS
+                                   FROM TBL_POSTING B
+                                  WHERE B.POSTING_NO = #{ no }
+                                ) + 1
+         WHERE A.POSTING_NO = #{ no }
+	</update>
+	
+	<select id="selectEntPostingDetail" resultMap="postingAndProjectResultMap">
+	     SELECT
+	           A.POSTING_NO 
+	         , A.POSTING_TITLE
+	         , A.POSTING_DETAIL
+	         , A.POSTING_DATE
+	         , A.VIEWS
+	         , A.ENT_NO
+	         , A.USER_NO
+	         , A.PROJECT_NO
+             , C.JOB_NAME
+             , D.GENRE_NAME
+	         , B.PROJECT_NAME
+	         , B.PROJECT_CONTENT
+	         , B.PROJECT_START_DATE
+	         , B.PROJECT_END_DATE
+	         , B.MANAGER_NAME
+	         , B.MANAGER_PHONE
+	         , B.MANAGER_EMAIL
+	         , F.ENT_PHOTO_SAVED_PATH
+	         , F.ENT_PHOTO_SAVED_NAME
+             , E.ENT_PROF_NO
+	      FROM TBL_POSTING A
+	      JOIN TBL_PROJECT B ON (A.PROJECT_NO = B.PROJECT_NO)
+	      JOIN TBL_JOB_CATEGORY C ON (A.JOB_NO = C.JOB_NO)
+	      JOIN TBL_GENRE_CATEGORY D ON (A.GENRE_NO = D.GENRE_NO)
+	      JOIN TBL_ENT_PROFILE E ON (A.ENT_NO = E.ENT_NO)
+          JOIN TBL_ENT_PHOTO F ON (E.ENT_PROF_NO = F.ENT_PROF_NO)
+	     WHERE A.PROJECT_NO = B.PROJECT_NO
+	       AND A.POSTING_OPEN_YN = 'Y'
+	       AND B.PROJECT_ACTIVE_YN = 'Y'
+	       AND A.ENT_NO = E.ENT_NO
+	       AND A.POSTING_NO = #{ no }
+	</select>
+	
+	
+	<select id="selectTotalCount" resultType="_int" parameterType="hashMap">
+	    SELECT
+	           COUNT(*)
+	      FROM TBL_POSTING A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		  JOIN TBL_GENRE_CATEGORY C ON (A.GENRE_NO = C.GENRE_NO)
+		  JOIN TBL_ENT_INFO D ON (A.ENT_NO = D.ENT_NO)
+		  <where>
+	   		  <if test="searchCondition1 == 'job'">
+					<if test="searchCondition2 == '배우'">
+				         A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '촬영'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '연출'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '음향'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '조명'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '미술'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '메이크업'">
+				        A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'  
+				    </if>
+				</if>
+				<if test="searchCondition1 == 'genre'">
+				      <if test="searchCondition2 == '영화'">
+				          A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '광고'">
+				          A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '다큐'">
+				          A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '드라마'">
+				          A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '기타'">
+				          A.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				</if>
+			AND A.POSTING_OPEN_YN = 'Y'
+	     ORDER BY A.POSTING_DATE DESC
+			
+	 </where>
+</select>
+	
+		
+	<select id="selectPostingList" resultMap="postingResultMap">
+	     SELECT
+	    	   A.RNUM
+	         , A.POSTING_NO
+	         , A.POSTING_TITLE
+	         , A.POSTING_DETAIL
+	         , A.POSTING_OPEN_YN
+	         , A.VIEWS
+	         , A.POSTING_DATE
+	         , A.PROJECT_NO
+	         , A.ENT_NO
+	         , A.JOB_NO
+	         , A.GENRE_NO
+	         , F.ENT_NAME
+	      FROM (SELECT ROWNUM RNUM
+			      	 , B.POSTING_NO
+			         , B.POSTING_TITLE
+			         , B.POSTING_DETAIL
+			         , B.POSTING_OPEN_YN
+			         , B.VIEWS
+			         , B.POSTING_DATE
+			         , B.PROJECT_NO
+			         , B.ENT_NO
+			         , B.JOB_NO
+			         , B.GENRE_NO
+	      		  FROM (SELECT C.POSTING_NO
+                             , C.POSTING_TITLE
+                             , C.POSTING_DETAIL
+                             , C.POSTING_OPEN_YN
+                             , C.VIEWS
+                             , C.POSTING_DATE
+                             , C.PROJECT_NO
+                             , C.ENT_NO
+                             , C.JOB_NO
+                             , C.GENRE_NO
+				          FROM TBL_POSTING C
+				               <if test="searchCondition1 == 'job'">
+									JOIN TBL_JOB_CATEGORY D ON (C.JOB_NO = D.JOB_NO)
+								</if>
+								<if test="searchCondition1 == 'genre'">
+									JOIN TBL_GENRE_CATEGORY D ON (C.GENRE_NO = D.GENRE_NO)
+								</if>
+								<if test="searchCondition1 == 'writer'">
+									JOIN TBL_ENT_INFO D ON (C.ENT_NO = D.ENT_NO)
+								</if>
+									<where>
+										<if test="searchCondition2 == '배우'">
+										     C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '촬영'">
+											C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '연출'">
+											C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '음향'">
+											 C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '조명'">
+											 C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '미술'">
+											C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '메이크업'">
+											C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'  
+										</if>
+
+										<if test="searchCondition2 == '영화'">
+										    C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '광고'">
+										    C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '다큐'">
+										    C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '드라마'">
+										    C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '기타'">
+										    C.POSTING_TITLE LIKE '%' || #{ searchValue } || '%'
+										</if>
+										<if test="searchCondition2 == '작성자'">
+										    D.ENT_NAME LIKE '%' || #{ searchValue } || '%'
+										</if>
+									AND C.POSTING_OPEN_YN = 'Y'
+									
+								</where>
+				           ORDER BY C.POSTING_DATE DESC
+				          )B
+				      <![CDATA[
+                      WHERE ROWNUM <= #{ endRow }
+                           
+                       ]]>
+				    )A
+				   JOIN TBL_JOB_CATEGORY D ON (A.JOB_NO = D.JOB_NO)
+				   JOIN TBL_GENRE_CATEGORY E ON (A.GENRE_NO = E.GENRE_NO)
+				   JOIN TBL_ENT_INFO F ON (A.ENT_NO = F.ENT_NO)  
+				  WHERE A.RNUM >= #{ startRow } 
+				  ORDER BY A.POSTING_DATE DESC
+	</select>
+	
+	<insert id="insertPostingApplication">
+	    INSERT
+		  INTO TBL_APPLICATION_HISTORY
+		(
+		  APPLICATION_NO
+		, APPLICATION_CONNECT_YN
+		, APPLICATION_DATE
+		, APPLICATION_INTRO
+		, USER_NO
+		, POSTING_NO
+		, USER_PROFILE_NO
+		)
+		VALUES
+		(
+		  SEQ_TBL_APPLICATION_HISTORY.NEXTVAL
+		, DEFAULT
+		, DEFAULT
+		, #{ applicationIntro }
+		, #{ userNo }
+		, #{ postingNo }
+		, #{ userProfileNo }
+		)
+	</insert>
+
+		<select id="selectPostingListByProject" resultMap="postingResultMap">
+		SELECT
+		       A.POSTING_NO
+		     , A.POSTING_TITLE
+		     , A.POSTING_DETAIL
+		     , A.POSTING_OPEN_YN
+		     , A.POSTING_DELETE_YN
+		     , A.VIEWS
+		     , A.POSTING_DATE
+		     , A.PROJECT_NO
+		     , A.ENT_NO
+		     , A.USER_NO
+		     , A.JOB_NO
+		     , A.GENRE_NO
+	      FROM TBL_POSTING A
+	     WHERE A.PROJECT_NO = #{ projectNo }
+	     ORDER BY A.POSTING_NO
+	</select>
+	
+	<select id="selectPostingListIncludeProjectName" resultMap="postingIncludeProjectNameDTO">
+		SELECT
+		       A.POSTING_NO
+		     , A.POSTING_TITLE
+		     , A.POSTING_DETAIL
+		     , A.POSTING_OPEN_YN
+		     , A.POSTING_DELETE_YN
+		     , A.VIEWS
+		     , A.POSTING_DATE
+		     , A.PROJECT_NO
+		     , A.ENT_NO
+		     , A.USER_NO
+		     , A.JOB_NO
+		     , A.GENRE_NO
+		     , B.PROJECT_NAME
+	      FROM TBL_POSTING A
+	      JOIN TBL_PROJECT B ON (A.PROJECT_NO = B.PROJECT_NO)
+         WHERE A.ENT_NO = #{ entNo }
+         ORDER BY A.POSTING_NO
+	</select>
+	
+	<select id="selectPostingListByEnt" resultMap="postingResultMap">
+		SELECT
+		       A.POSTING_NO
+		     , A.POSTING_TITLE
+		     , A.POSTING_DETAIL
+		     , A.POSTING_OPEN_YN
+		     , A.POSTING_DELETE_YN
+		     , A.VIEWS
+		     , A.POSTING_DATE
+		     , A.PROJECT_NO
+		     , A.ENT_NO
+		     , A.USER_NO
+		     , A.JOB_NO
+		     , A.GENRE_NO
+	      FROM TBL_POSTING A
+		 WHERE A.ENT_NO = ${ entNo }
+		 ORDER BY A.POSTING_NO		
+	</select>
+	<select id="selectPostingListByUser" resultMap="postingResultMap">
+		SELECT
+		       A.POSTING_NO
+		     , A.POSTING_TITLE
+		     , A.POSTING_DETAIL
+		     , A.POSTING_OPEN_YN
+		     , A.POSTING_DELETE_YN
+		     , A.VIEWS
+		     , A.POSTING_DATE
+		     , A.PROJECT_NO
+		     , A.ENT_NO
+		     , A.USER_NO
+		     , A.JOB_NO
+		     , A.GENRE_NO
+	      FROM TBL_POSTING A
+		 WHERE A.USER_NO = ${ userNo }
+		 ORDER BY A.POSTING_NO		
+	</select>
+	
+	<select id="selectPostingDetail" resultMap="postingResultMap">
+		SELECT
+		       A.POSTING_NO
+		     , A.POSTING_TITLE
+		     , A.POSTING_DETAIL
+		     , A.POSTING_OPEN_YN
+		     , A.POSTING_DELETE_YN
+		     , A.VIEWS
+		     , A.POSTING_DATE
+		     , A.PROJECT_NO
+		     , A.ENT_NO
+		     , A.USER_NO
+		     , A.JOB_NO
+		     , A.GENRE_NO
+	      FROM TBL_POSTING A
+	     WHERE A.POSTING_NO = #{ postingNo }
+	</select>
+	
+	<insert id="insertPosting" parameterType="posting.model.dto.PostingDTO">
+		INSERT
+		  INTO TBL_POSTING A
+		(
+		  POSTING_NO, POSTING_TITLE, POSTING_DETAIL, POSTING_OPEN_YN, VIEWS, POSTING_DELETE_YN
+		, POSTING_DATE, PROJECT_NO, JOB_NO, GENRE_NO, ENT_NO, USER_NO
+		)
+		VALUES
+		(
+		  SEQ_TBL_POSTING.nextval, #{ postingTitle }, #{ postingDetail }, DEFAULT, DEFAULT, DEFAULT
+		, SYSDATE, #{ projectNo }, #{ jobNo }, #{ genreNo },
+		<if test="entNo!=0">#{ entNo },</if> <if test="entNo==0">null,</if>
+		<if test="userNo!=0">#{ userNo }</if> <if test="userNo==0">null</if>
+		)			
+	</insert>
+	
+	<update id="updatePosting" parameterType="posting.model.dto.PostingDTO">
+		UPDATE
+		       TBL_POSTING A
+		   SET
+		       A.POSTING_TITLE = #{ postingTitle }
+		     , A.POSTING_DETAIL = #{ postingDetail }
+		     , A.JOB_NO = #{ jobNo } 
+		 WHERE A.POSTING_NO = #{ postingNo }
+	</update>
+	
+	<update id="deletePosting">
+		UPDATE
+		       TBL_POSTING A
+		   SET
+		       A.POSTING_DELETE_YN = 'Y'
+		 WHERE A.POSTING_NO = #{ postingNo }
+	</update>
+	
+	<update id="openPosting">
+		UPDATE
+		       TBL_POSTING A
+		   SET 
+		       A.POSTING_OPEN_YN = 'Y'
+		 WHERE A.POSTING_NO = #{ postingNo }
+	</update>
+	
+	<update id="closePosting">
+		UPDATE
+		       TBL_POSTING A
+		   SET 
+		       A.POSTING_OPEN_YN = 'N'
+		 WHERE A.POSTING_NO = #{ postingNo }
+	</update>
+	
+ 	<update id="deletePostingGroupByProject">
+		UPDATE
+		       TBL_POSTING A
+		   SET
+		       A.POSTING_DELETE_YN = 'Y'
+		 WHERE A.PROJECT_NO = #{ projectNo }
+	</update>
+	
+</mapper>
+

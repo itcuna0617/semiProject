@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QuestionDAO">
+	<resultMap type="customerCenter.model.dto.QuestionAndAnswerDTO" id="questionAnswerResultMap">
+		<id property="queNo" column="QUE_NO"/>
+		<result property="queTitle" column="QUE_TITLE"/>
+		<result property="queContent" column="QUE_CONTENT"/>
+		<result property="queDate" column="QUE_DATE"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="ansYN" column="ANS_YN"/>
+		<result property="ansTitle" column="ANS_TITLE"/>
+		<result property="ansContent" column="ANS_CONTENT"/>	
+		<result property="ansDate" column="ANS_DATE"/>
+		<result property="queNo" column="QUE_NO"/>
+	</resultMap>
+	
+	<resultMap type="customerCenter.model.dto.QuestionDTO" id="questionResultMap">
+		<id property="queNo" column="QUE_NO"/>
+		<result property="queTitle" column="QUE_TITLE"/>
+		<result property="queContent" column="QUE_CONTENT"/>
+		<result property="queDate" column="QUE_DATE"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="ansYN" column="ANS_YN"/>
+	</resultMap>
+	
+	<resultMap type="customerCenter.model.dto.QuestionAndQuestionFileDTO" id="questionAndFileResultMap">
+		<id property="queNo" column="QUE_NO"/>
+		<result property="queTitle" column="QUE_TITLE"/>
+		<result property="queContent" column="QUE_CONTENT"/>
+		<result property="queDate" column="QUE_DATE"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="ansYN" column="ANS_YN"/>
+		<result property="queFileName" column="QUE_FILE_NAME"/>
+		<result property="queFileSavedPath" column="QUE_FILE_SAVED_PATH"/>
+		<result property="ansYN" column="ANS_YN"/>
+	</resultMap>
+	
+	<resultMap type="customerCenter.model.dto.QuestionAndAnswerAndFileDTO" id="questionAndAnswerAndFileResultMap">
+		<id property="queNo" column="QUE_NO"/>
+		<result property="queTitle" column="QUE_TITLE"/>
+		<result property="queContent" column="QUE_CONTENT"/>
+		<result property="queDate" column="QUE_DATE"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="ansYN" column="ANS_YN"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="ansYN" column="ANS_YN"/>
+		<result property="queFileName" column="QUE_FILE_NAME"/>
+		<result property="queFileSavedPath" column="QUE_FILE_SAVED_PATH"/>
+		<result property="ansNo" column="ANS_NO"/>
+		<result property="ansTitle" column="ANS_TITLE"/>
+		<result property="ansContent" column="ANS_CONTENT"/>
+		<result property="ansDate" column="ANS_DATE"/>
+		<result property="adminId" column="ADMIN_ID"/>
+	</resultMap>
+	
+	<resultMap type="customerCenter.model.dto.QuestionFileDTO" id="questionFileResultMap">
+		<result property="queFileName" column="QUE_FILE_NAME"/>
+		<result property="queFileSavedPath" column="QUE_FILE_SAVED_PATH"/>
+		<result property="queNo" column="QUE_NO"/>
+	</resultMap>
+	
+	<resultMap type="customerCenter.model.dto.AnswerDTO" id="answerResultMap">
+		<id property="ansNo" column="ANS_NO"/>
+		<result property="ansTitle" column="ANS_TITLE"/>
+		<result property="ansContent" column="ANS_CONTENT"/>
+		<result property="ansDate" column="ANS_DATE"/>
+		<result property="adminId" column="ADMIN_ID"/>
+		<result property="queNo" column="QUE_NO"/>
+	</resultMap>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM TBL_QUESTION
+	</select>
+	
+	
+	<select id="selectUserQueNo" parameterType="_int" resultType="_int">
+	    SELECT
+               MAX(QUE_NO)
+          FROM TBL_QUESTION 
+         WHERE USER_NO = #{ userNo }
+	</select>
+	
+	<select id="selectEntQueNo" parameterType="_int" resultType="_int">
+	    SELECT
+               QUE_NO
+          FROM TBL_QUESTION 
+         WHERE ENT_NO = #{ entNo }
+           AND ROWNUM <![CDATA[ <= ]]> 1
+         ORDER BY QUE_NO DESC
+	</select>
+	
+	<select id="selectAllQuestionList" resultMap="questionAnswerResultMap">
+	       SELECT
+            A.QUE_NO
+          , A.QUE_TITLE
+          , A.QUE_CONTENT
+          , A.QUE_DATE
+          , A.ANS_YN
+          , A.CATEGORY_NO
+          , A.USER_NO
+          , A.ENT_NO
+       FROM (SELECT ROWNUM RNUM
+                   ,  B.QUE_NO
+                   , B.ANS_YN
+                   , B.CATEGORY_NO
+                   , B.USER_NO
+                   , B.ENT_NO
+                   , B.QUE_CONTENT
+                   , B.QUE_TITLE
+                   , B.QUE_DATE
+               FROM (SELECT    
+                               C.QUE_NO
+                             , C.ANS_YN
+                             , C.CATEGORY_NO
+                             , C.USER_NO
+                             , C.QUE_CONTENT
+                             , C.ENT_NO
+                             , C.QUE_TITLE
+                             , C.QUE_DATE
+                          FROM TBL_QUESTION C
+                         ORDER BY C.QUE_DATE DESC
+                        )B
+			  <![CDATA[
+                WHERE ROWNUM <= #{ endRow }
+              ]]>
+		  )A   
+      WHERE A.RNUM >= #{ startRow }
+	</select>
+	
+	
+	<insert id="insertNewQuestion">
+	    INSERT
+		  INTO TBL_QUESTION A
+		  (
+		    A.QUE_NO
+		  , A.QUE_TITLE
+		  , A.QUE_CONTENT
+		  , A.QUE_DATE
+		  , A.ANS_YN
+		  , A.CATEGORY_NO
+		  , A.USER_NO
+		  , A.ENT_NO
+		  )
+		  VALUES
+		  (
+		    SEQ_TBL_QUESTION.NEXTVAL
+		  , #{ queTitle }
+		  , #{ queContent }
+		  , SYSDATE
+		  , DEFAULT
+		  , #{ categoryNo }
+		  , #{ userNo, jdbcType=INTEGER }
+		  , #{ entNo, jdbcType=INTEGER }
+		  )
+	</insert>
+	
+	<select id="selectQuestionDetail" resultMap="questionAndAnswerAndFileResultMap">
+	     SELECT
+	           A.QUE_NO
+	         , A.QUE_TITLE
+	         , A.QUE_DATE
+	         , A.QUE_CONTENT
+	         , A.USER_NO
+	         , A.ENT_NO
+	         , A.ANS_YN
+	      FROM TBL_QUESTION A
+	     WHERE A.QUE_NO = #{ queNo }
+	</select>
+	
+	<select id="selectQuestionFile" resultMap="questionAndAnswerAndFileResultMap">
+	    SELECT
+                QUE_FILE_NAME
+              , QUE_FILE_SAVED_PATH
+           FROM TBL_QUESTION_ADD_FILE
+          WHERE QUE_NO IS NOT NULL
+            AND QUE_NO = #{ queNo }
+	</select>
+	    
+	<insert id="insertQuestionFile">
+		INSERT
+		  INTO TBL_QUESTION_ADD_FILE A
+		  (
+		    A.QUE_FILE_NAME
+		  , A.QUE_FILE_SAVED_PATH
+		  , A.QUE_NO
+		  )
+		   VALUES
+		  <if test="queFileName!=null and queFileName!=''">
+			  (
+			    #{ queFileName }
+			  , #{ queFileSavedPath }
+			  , #{ queNo }
+			  )
+		  </if>
+		   <if test="!(queFileName!=null and queFileName!='')">
+			  (
+			    NULL
+			  , NULL
+			  , NULL
+			  )
+		  </if>
+	</insert>
+	
+	<select id="selectQuestionAnswerDetail" resultMap="questionAndAnswerAndFileResultMap">
+	     SELECT
+	           A.QUE_NO
+	         , A.QUE_TITLE
+	         , A.QUE_DATE
+	         , A.QUE_CONTENT
+	         , A.USER_NO
+	         , A.ENT_NO
+	         , A.ANS_YN
+	         , B.ANS_TITLE
+	         , B.ANS_CONTENT
+	         , B.ANS_DATE
+	         , B.QUE_NO
+	      FROM TBL_QUESTION A
+	      JOIN TBL_ANSWER B ON (A.QUE_NO = B.QUE_NO)
+	     WHERE A.QUE_NO = #{ queNo }
+	       AND A.QUE_NO = B.QUE_NO
+	       AND A.ANS_YN = 'Y'
+	</select>
+</mapper>

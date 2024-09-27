@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectDAO">
+	<resultMap type="project.model.dto.ProjectDTO" id="projectResultMap">
+		<id property="projectNo" column="PROJECT_NO"/>
+		<result property="projectName" column="PROJECT_NAME"/>
+		<result property="projectContent" column="PROJECT_CONTENT"/>
+		<result property="projectStartDate" column="PROJECT_START_DATE"/>
+		<result property="projectEndDate" column="PROJECT_END_DATE"/>
+		<result property="projectActiveYN" column="PROJECT_ACTIVE_YN"/>
+		<result property="managerName" column="MANAGER_NAME"/>
+		<result property="managerPhone" column="MANAGER_PHONE"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+	</resultMap>
+	
+
+	<select id="selectProjectList" resultMap="projectResultMap">
+         SELECT 
+                A.PROJECT_NO
+              , A.PROJECT_NAME
+              , A.PROJECT_CONTENT
+              , A.PROJECT_START_DATE
+              , A.PROJECT_END_DATE
+              , A.PROJECT_ACTIVE_YN
+              , A.MANAGER_NAME
+              , A.MANAGER_PHONE
+              , A.MANAGER_EMAIL
+              , A.ENT_NO
+              , A.GENRE_NO
+           FROM TBL_PROJECT A
+          WHERE A.ENT_NO = #{ entNo }
+            AND A.PROJECT_ACTIVE_YN = 'Y'
+          ORDER BY A.PROJECT_NO
+	</select>
+	<select id="selectProject" resultMap="projectResultMap">
+         SELECT 
+                A.PROJECT_NO
+              , A.PROJECT_NAME
+              , A.PROJECT_CONTENT
+              , A.PROJECT_START_DATE
+              , A.PROJECT_END_DATE
+              , A.PROJECT_ACTIVE_YN
+              , A.MANAGER_NAME
+              , A.MANAGER_PHONE
+              , A.MANAGER_EMAIL
+              , A.ENT_NO
+              , A.GENRE_NO
+           FROM TBL_PROJECT A
+          WHERE A.PROJECT_NO = #{ projectNo }
+            AND A.PROJECT_ACTIVE_YN = 'Y'
+	</select>
+	
+	<select id="selectGenreNo" resultType="_int">
+         SELECT 
+                A.GENRE_NO
+           FROM TBL_PROJECT A
+          WHERE A.PROJECT_NO = #{ projectNo }
+            AND A.PROJECT_ACTIVE_YN = 'Y'
+	</select>
+	
+	<select id="selectProjectName" resultType="string">
+         SELECT 
+                A.PROJECT_NAME
+           FROM TBL_PROJECT A
+          WHERE A.PROJECT_NO = #{ projectNo }
+            AND A.PROJECT_ACTIVE_YN = 'Y'
+	</select>
+	
+	<update id="updateProject" parameterType="project.model.dto.ProjectDTO">
+		UPDATE 
+			   TBL_PROJECT A
+		   SET A.PROJECT_NAME=#{ projectName }
+		     , A.PROJECT_CONTENT=#{ projectContent }
+		     , A.PROJECT_START_DATE=#{ projectStartDate }
+		     , A.PROJECT_END_DATE=#{ projectEndDate }
+		     , A.MANAGER_NAME=#{ managerName }
+		     , A.MANAGER_PHONE=#{ managerPhone }
+		     , A.MANAGER_EMAIL=#{ managerEmail }
+		     , A.GENRE_NO=#{ genreNo }
+		 WHERE A.PROJECT_NO=#{ projectNo }
+           AND A.PROJECT_ACTIVE_YN = 'Y'		     
+	</update>
+	
+	<insert id="insertProject" parameterType="project.model.dto.ProjectDTO">
+		INSERT
+		  INTO TBL_PROJECT A
+		(
+		  A.PROJECT_NO, A.PROJECT_NAME, A.PROJECT_CONTENT
+		, A.PROJECT_START_DATE, A.PROJECT_END_DATE, A.MANAGER_NAME
+		, A.MANAGER_PHONE, A.MANAGER_EMAIL, A.GENRE_NO
+		, A.PROJECT_ACTIVE_YN, A.ENT_NO
+		)
+		VALUES
+		(
+		  SEQ_TBL_PROJECT_NO.nextval, #{ projectName }, #{ projectContent }
+		, #{ projectStartDate }, #{ projectEndDate }, #{ managerName }
+		, #{ managerPhone }, #{ managerEmail }, #{ genreNo }
+		, 'Y', #{ entNo }  
+		)
+	</insert>
+	
+	<update id="deleteProject" parameterType="_int">
+		UPDATE
+		       TBL_PROJECT A
+		   SET A.PROJECT_ACTIVE_YN = 'N'
+		 WHERE A.PROJECT_NO = #{ projectNo }
+	</update>
+	
+	<update id="deletePosting">
+		UPDATE
+		       TBL_POSTING A
+		   SET 
+		       A.POSTING_OPEN_YN = 'N'
+		 WHERE A.PROJECT_NO = #{ projectNo }
+	</update>
+	
+</mapper>

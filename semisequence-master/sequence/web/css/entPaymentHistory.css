@@ -1,0 +1,102 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.entTitle {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../img/titleimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.entTitle p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.entSettingWrap {
+	padding: 0px 300px 0px 300px;
+}
+
+.entSettingRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.entSettingRoot p {
+	font-family: 'MinSans-Medium';
+	text-decoration: none;
+	color: #4b4b4b;
+}
+
+.entSettingWrap {
+	font-family: 'MinSans-Medium';
+}
+
+.payment-member-rate {
+	font-size: 30px;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.plan-info-title {
+	font-size: 25px;
+	margin-top: 30px;
+	text-align: center;
+}
+
+.plan-info {
+	text-align: center;
+	margin-top: 30px;
+}
+
+.plan-info h3 {
+	margin-bottom: 20px;
+}
+
+button {
+	background-color: white;
+	color: skyblue;
+	border: 2px solid skyblue;
+	border-radius: 5px;
+}
+
+button:hover {
+	background-color: skyblue;
+	color: white;
+}
+
+.payment-history-title {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	font-size: 30px;
+	text-align: center;
+}
+
+.payment-history-wrap {
+	background-color: #FBFAFA;
+	width: 280px;
+	padding: 20px 50px 20px 50px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.paymet-history {
+	display: table;
+}
+
+.paymet-history li {
+	padding: 5px;
+}

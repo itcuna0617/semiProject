@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user.mapper.UserOfferMapper">
+
+	<resultMap type="user.model.dto.OfferByPostingByentInfoDTO" id="offerByPostingByentInfoResultMap">
+		<id property="offerNo" column="OFFER_NO"/>
+		<result property="offerConnectYn" column="OFFER_CONNECT_YN"/>
+		<result property="offerDate" column="OFFER_DATE"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="entName" column="ENT_NAME"/>
+	</resultMap>
+
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM TBL_OFFER A
+		 WHERE A.USER_NO = ${ userNo }
+	</select>
+	
+	<select id="selectUSerApplicationByPosting" parameterType="hashmap" resultMap="offerByPostingByentInfoResultMap">
+		SELECT
+			   A.RNUM
+			 , A.OFFER_NO
+			 , A.OFFER_CONNECT_YN
+			 , A.OFFER_DATE
+			 , A.USER_NO
+			 , A.POSTING_NO
+			 , D.POSTING_TITLE
+			 , E.ENT_NAME
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.OFFER_NO
+			   		 , B.OFFER_CONNECT_YN
+			   		 , B.OFFER_DATE
+			   		 , B.USER_NO
+			   		 , B.POSTING_NO
+		  		  FROM (SELECT C.OFFER_NO
+					   		 , C.OFFER_CONNECT_YN
+					   		 , C.OFFER_DATE
+					   		 , C.USER_NO
+					   		 , C.POSTING_NO
+		  		  		  FROM TBL_OFFER C
+		  		  		 WHERE C.USER_NO = #{ userNo }
+		  		  		 ORDER BY C.OFFER_DATE DESC
+		  		  		)B
+		  		<![CDATA[
+                WHERE ROWNUM <= #{ selectCriteria.endRow }
+                ]]>
+	  		  ) A
+	  	  JOIN TBL_POSTING D ON (A.POSTING_NO = D.POSTING_NO)
+	  	  JOIN TBL_ENT_INFO E ON (D.ENT_NO = E.ENT_NO)
+		 WHERE A.RNUM >= #{ selectCriteria.startRow }  
+	</select>
+	<update id="updateConnectYn">
+		UPDATE
+		  	   TBL_OFFER A
+		   SET A.OFFER_CONNECT_YN = 'Y'
+		 WHERE A.OFFER_NO = #{ offerNo }
+	</update>
+</mapper>

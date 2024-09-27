@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApplicationDAO">
+	
+	
+	<resultMap type="user.model.dto.UserProfileDTO" id="userProfileResultMap">
+		<id property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userPhoto" column="USER_PHOTO"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userArea" column="USER_AREA"/>
+		<result property="userMiniTitle" column="USER_MINI_TITLE"/>
+		<result property="userMainText" column="USER_MAIN_TEXT"/>
+		<result property="userResume" column="USER_RESUME"/>
+		<result property="userOpenYN" column="USER_OPEN_YN"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+	</resultMap>
+	
+	<resultMap type="posting.model.dto.PostingDTO" id="postingResultMap">
+		<id property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDetail" column="POSTING_DETAIL"/>
+		<result property="postingOpenYN" column="POSTING_OPEN_YN"/>
+		<result property="postingDeleteYN" column="POSTING_DELETE_YN"/>
+		<result property="views" column="VIEWS"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+		<result property="projectNo" column="PROJECT_NO"/>
+		<result property="entNo" column="ENT_NO"/>	
+		<result property="userNo" column="USER_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.EntDTO" id="entInfoResultMap">
+		<id property="entNo" column="ENT_NO"/>
+		<result property="entName" column="ENT_NAME"/>
+		<result property="entId" column="ENT_ID"/>
+		<result property="entPwd" column="ENT_PWD"/>
+		<result property="entPhone" column="ENT_PHONE"/>
+		<result property="entEmail" column="ENT_EMAIL"/>
+		<result property="entDropYn" column="ENT_DROP_YN"/>
+		<result property="entSanctionYn" column="ENT_SANCTION_YN"/>
+		<result property="entActiveYn" column="ENT_ACTIVE_YN"/>
+	</resultMap>
+	
+	<resultMap type="project.model.dto.ProjectDTO" id="projectResultMap">
+		<id property="projectNo" column="PROJECT_NO"/>
+		<result property="projectName" column="PROJECT_NAME"/>
+		<result property="projectContent" column="PROJECT_CONTENT"/>
+		<result property="projectStartDate" column="PROJECT_START_DATE"/>
+		<result property="projectEndDate" column="PROJECT_END_DATE"/>
+		<result property="projectActiveYN" column="PROJECT_ACTIVE_YN"/>
+		<result property="managerName" column="MANAGER_NAME"/>
+		<result property="managerPhone" column="MANAGER_PHONE"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+	</resultMap>
+	
+	<resultMap type="application.model.dto.ApplicationDTO" id="applicationResultMap">
+		<id property="applicationNo" column="APPLICATION_NO"/>
+		<result property="applicationConnectYN" column="APPLICATION_CONNECT_YN"/>
+		<result property="applicationDate" column="APPLICATION_DATE"/>
+		<result property="applicationIntro" column="APPLICATION_INTRO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="postingNo" column="POSTING_NO"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+		<association property="posting" resultMap="postingResultMap"></association>
+		<association property="userProfile" resultMap="userProfileResultMap"></association>
+		<association property="project" resultMap="projectResultMap"></association>
+		<association property="entInfo" resultMap="entInfoResultMap"></association>
+		<association property="job" resultMap="jobResultMap"></association>
+		<association property="userPhoto" resultMap="photoResultMap"></association>
+	</resultMap>
+	
+	<resultMap type="user.model.dto.UserPhotoDTO" id="photoResultMap">
+		<id property="userPhotoNo" column="USER_PHOTO_NO"/>
+		<result property="userPhotoOriginalSavedPath" column="USER_PHOTO_ORIGINAL_SAVED_PAH"/>
+		<result property="userPhotoSavedName" column="USER_PHOTO_SAVED_NAME"/>
+		<result property="userPhotoSavedPath" column="USER_PHOTO_SAVED_PATH"/>
+		<result property="userPhotoActiveYn" column="USER_PHOTO_ACTIVE_YN"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+	</resultMap>
+	
+	<resultMap type="posting.model.dto.JobDTO" id="jobResultMap">
+		<id property="jobNo" column="JOB_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
+	</resultMap>
+	
+	<select id="selectApplicationByEnt" resultMap="applicationResultMap" parameterType="hashMap">
+		SELECT
+	           H.RNUM
+	         , H.APPLICATION_NO
+			 , H.APPLICATION_CONNECT_YN
+			 , H.APPLICATION_DATE
+			 , H.APPLICATION_INTRO
+			 , H.USER_NO
+			 , H.POSTING_NO
+			 , H.USER_PROFILE_NO
+			 , H.POSTING_TITLE
+			 , H.PROJECT_NO
+			 , H.ENT_NO
+			 , H.USER_NAME
+			 , H.USER_AREA
+			 , H.PROJECT_NAME
+			 , H.ENT_NAME
+ 			 , H.USER_PHOTO_SAVED_PATH			 
+			 , H.JOB_NAME  
+	      FROM (SELECT
+			           ROWNUM RNUM
+					 , I.APPLICATION_NO
+					 , I.APPLICATION_CONNECT_YN
+					 , I.APPLICATION_DATE
+					 , I.APPLICATION_INTRO
+					 , I.USER_NO
+					 , I.POSTING_NO
+					 , I.USER_PROFILE_NO
+					 , I.POSTING_TITLE
+					 , I.PROJECT_NO
+					 , I.ENT_NO
+					 , I.USER_NAME
+					 , I.USER_AREA
+					 , I.PROJECT_NAME
+					 , I.ENT_NAME
+		  			 , I.USER_PHOTO_SAVED_PATH			 
+					 , I.JOB_NAME
+				  FROM (SELECT
+							   A.APPLICATION_NO
+							 , A.APPLICATION_CONNECT_YN
+							 , A.APPLICATION_DATE
+							 , A.APPLICATION_INTRO
+							 , A.USER_NO
+							 , A.POSTING_NO
+							 , A.USER_PROFILE_NO
+							 , B.POSTING_TITLE
+							 , B.PROJECT_NO
+							 , B.ENT_NO
+							 , C.USER_NAME
+							 , C.USER_AREA
+							 , D.PROJECT_NAME
+							 , E.ENT_NAME
+				  			 , F.USER_PHOTO_SAVED_PATH			 
+							 , G.JOB_NAME
+						  FROM TBL_APPLICATION_HISTORY A
+							   JOIN TBL_POSTING B 
+							   	 ON A.POSTING_NO=B.POSTING_NO
+							   JOIN TBL_USER_PROFILE C
+							     ON A.USER_PROFILE_NO=C.USER_PROFILE_NO
+							   JOIN TBL_PROJECT D
+							     ON B.PROJECT_NO=D.PROJECT_NO
+							   JOIN TBL_ENT_INFO E
+							     ON B.ENT_NO=E.ENT_NO
+							   JOIN TBL_JOB_CATEGORY G
+							     ON C.JOB_NO=G.JOB_NO
+				 			   JOIN TBL_USER_PHOTO F
+							     ON C.USER_PROFILE_NO=F.USER_PROFILE_NO
+                              WHERE A.APPLICATION_FAIL_YN = 'N'
+							    AND A.APPLICATION_CONNECT_YN = 'N'
+								<choose>
+								<when test="criteria == 'posting'">
+										AND	A.POSTING_NO= #{ postingNo }
+								</when>
+								<when test="criteria == 'ent'">
+									    AND	B.ENT_NO= #{ entNo }
+								</when>
+								<when test="criteria == 'project'">
+									    AND B.PROJECT_NO= #{ projectNo }
+								</when>
+								</choose>
+                              ORDER BY A.APPLICATION_DATE) I ) H
+     <![CDATA[
+     	WHERE H.RNUM >=#{ startNo }
+     	  AND H.RNUM <=#{ endNo }
+     ]]>
+	</select>
+	<select id="selectApplicationPass" resultMap="applicationResultMap" parameterType="hashMap">
+		SELECT
+	           H.RNUM
+	         , H.APPLICATION_NO
+			 , H.APPLICATION_CONNECT_YN
+			 , H.APPLICATION_DATE
+			 , H.APPLICATION_INTRO
+			 , H.USER_NO
+			 , H.POSTING_NO
+			 , H.USER_PROFILE_NO
+			 , H.POSTING_TITLE
+			 , H.PROJECT_NO
+			 , H.ENT_NO
+			 , H.USER_NAME
+			 , H.USER_AREA
+			 , H.PROJECT_NAME
+			 , H.ENT_NAME
+ 			 , H.USER_PHOTO_SAVED_PATH			 
+			 , H.JOB_NAME  
+	      FROM (SELECT
+			           ROWNUM RNUM
+					 , I.APPLICATION_NO
+					 , I.APPLICATION_CONNECT_YN
+					 , I.APPLICATION_DATE
+					 , I.APPLICATION_INTRO
+					 , I.USER_NO
+					 , I.POSTING_NO
+					 , I.USER_PROFILE_NO
+					 , I.POSTING_TITLE
+					 , I.PROJECT_NO
+					 , I.ENT_NO
+					 , I.USER_NAME
+					 , I.USER_AREA
+					 , I.PROJECT_NAME
+					 , I.ENT_NAME
+		  			 , I.USER_PHOTO_SAVED_PATH			 
+					 , I.JOB_NAME
+				  FROM (SELECT
+							   A.APPLICATION_NO
+							 , A.APPLICATION_CONNECT_YN
+							 , A.APPLICATION_DATE
+							 , A.APPLICATION_INTRO
+							 , A.USER_NO
+							 , A.POSTING_NO
+							 , A.USER_PROFILE_NO
+							 , B.POSTING_TITLE
+							 , B.PROJECT_NO
+							 , B.ENT_NO
+							 , C.USER_NAME
+							 , C.USER_AREA
+							 , D.PROJECT_NAME
+							 , E.ENT_NAME
+				  			 , F.USER_PHOTO_SAVED_PATH			 
+							 , G.JOB_NAME
+						  FROM TBL_APPLICATION_HISTORY A
+							   JOIN TBL_POSTING B 
+							   	 ON A.POSTING_NO=B.POSTING_NO
+							   JOIN TBL_USER_PROFILE C
+							     ON A.USER_PROFILE_NO=C.USER_PROFILE_NO
+							   JOIN TBL_PROJECT D
+							     ON B.PROJECT_NO=D.PROJECT_NO
+							   JOIN TBL_ENT_INFO E
+							     ON B.ENT_NO=E.ENT_NO
+							   JOIN TBL_JOB_CATEGORY G
+							     ON C.JOB_NO=G.JOB_NO
+				 			   JOIN TBL_USER_PHOTO F
+							     ON C.USER_PROFILE_NO=F.USER_PROFILE_NO
+                              WHERE A.APPLICATION_FAIL_YN = 'N'
+							    AND A.APPLICATION_CONNECT_YN = 'Y'
+								<choose>
+								<when test="criteria == 'posting'">
+										AND	A.POSTING_NO= #{ postingNo }
+								</when>
+								<when test="criteria == 'ent'">
+									    AND	B.ENT_NO= #{ entNo }
+								</when>
+								<when test="criteria == 'project'">
+									    AND B.PROJECT_NO= #{ projectNo }
+								</when>
+								</choose>
+                              ORDER BY A.APPLICATION_DATE) I ) H
+     <![CDATA[
+     	WHERE H.RNUM >=#{ startNo }
+     	  AND H.RNUM <=#{ endNo }
+     ]]>	
+	
+	
+	
+	</select>
+	<select id="selectApplicationFail" resultMap="applicationResultMap" parameterType="hashMap">
+		SELECT
+	           H.RNUM
+	         , H.APPLICATION_NO
+			 , H.APPLICATION_CONNECT_YN
+			 , H.APPLICATION_DATE
+			 , H.APPLICATION_INTRO
+			 , H.USER_NO
+			 , H.POSTING_NO
+			 , H.USER_PROFILE_NO
+			 , H.POSTING_TITLE
+			 , H.PROJECT_NO
+			 , H.ENT_NO
+			 , H.USER_NAME
+			 , H.USER_AREA
+			 , H.PROJECT_NAME
+			 , H.ENT_NAME
+ 			 , H.USER_PHOTO_SAVED_PATH			 
+			 , H.JOB_NAME  
+	      FROM (SELECT
+			           ROWNUM RNUM
+					 , I.APPLICATION_NO
+					 , I.APPLICATION_CONNECT_YN
+					 , I.APPLICATION_DATE
+					 , I.APPLICATION_INTRO
+					 , I.USER_NO
+					 , I.POSTING_NO
+					 , I.USER_PROFILE_NO
+					 , I.POSTING_TITLE
+					 , I.PROJECT_NO
+					 , I.ENT_NO
+					 , I.USER_NAME
+					 , I.USER_AREA
+					 , I.PROJECT_NAME
+					 , I.ENT_NAME
+		  			 , I.USER_PHOTO_SAVED_PATH			 
+					 , I.JOB_NAME
+				  FROM (SELECT
+							   A.APPLICATION_NO
+							 , A.APPLICATION_CONNECT_YN
+							 , A.APPLICATION_DATE
+							 , A.APPLICATION_INTRO
+							 , A.USER_NO
+							 , A.POSTING_NO
+							 , A.USER_PROFILE_NO
+							 , B.POSTING_TITLE
+							 , B.PROJECT_NO
+							 , B.ENT_NO
+							 , C.USER_NAME
+							 , C.USER_AREA
+							 , D.PROJECT_NAME
+							 , E.ENT_NAME
+				  			 , F.USER_PHOTO_SAVED_PATH			 
+							 , G.JOB_NAME
+						  FROM TBL_APPLICATION_HISTORY A
+							   JOIN TBL_POSTING B 
+							   	 ON A.POSTING_NO=B.POSTING_NO
+							   JOIN TBL_USER_PROFILE C
+							     ON A.USER_PROFILE_NO=C.USER_PROFILE_NO
+							   JOIN TBL_PROJECT D
+							     ON B.PROJECT_NO=D.PROJECT_NO
+							   JOIN TBL_ENT_INFO E
+							     ON B.ENT_NO=E.ENT_NO
+							   JOIN TBL_JOB_CATEGORY G
+							     ON C.JOB_NO=G.JOB_NO
+				 			   JOIN TBL_USER_PHOTO F
+							     ON C.USER_PROFILE_NO=F.USER_PROFILE_NO
+                              WHERE A.APPLICATION_FAIL_YN = 'Y'
+							    AND A.APPLICATION_CONNECT_YN = 'N'
+								<choose>
+								<when test="criteria == 'posting'">
+										AND	A.POSTING_NO= #{ postingNo }
+								</when>
+								<when test="criteria == 'ent'">
+									    AND	B.ENT_NO= #{ entNo }
+								</when>
+								<when test="criteria == 'project'">
+									    AND B.PROJECT_NO= #{ projectNo }
+								</when>
+								</choose>
+                              ORDER BY A.APPLICATION_DATE) I ) H
+     <![CDATA[
+     	WHERE H.RNUM >=#{ startNo }
+     	  AND H.RNUM <=#{ endNo }
+     ]]>	
+	
+	
+	
+	</select>
+	
+	<select id="selectTotalCount" parameterType="hashMap" resultType="_int">
+        SELECT
+               COUNT(*)
+          FROM TBL_APPLICATION_HISTORY A
+          JOIN TBL_POSTING B ON (A.POSTING_NO=B.POSTING_NO)
+         WHERE APPLICATION_CONNECT_YN='N'
+           AND APPLICATION_FAIL_YN='N'
+         <choose>
+         	<when test="criteria == 'ent'">
+		  		AND B.ENT_NO = #{ entNo }
+         	</when>
+         	<when test="criteria == 'project'">
+         		AND B.PROJECT_NO = #{ projectNo }
+         	</when>
+         	<when test="criteria == 'posting'">
+         	    AND A.POSTING_nO = #{ postingNo }
+         	</when>
+         </choose>
+	</select>
+	<select id="selectPassTotalCount" parameterType="hashMap" resultType="_int">
+        SELECT
+               COUNT(*)
+          FROM TBL_APPLICATION_HISTORY A
+          JOIN TBL_POSTING B ON (A.POSTING_NO=B.POSTING_NO)
+         WHERE APPLICATION_CONNECT_YN='Y'
+         <choose>
+         	<when test="criteria == 'ent'">
+		  		AND B.ENT_NO = #{ entNo }
+         	</when>
+         	<when test="criteria == 'project'">
+         		AND B.PROJECT_NO = #{ projectNo }
+         	</when>
+         	<when test="criteria == 'posting'">
+         	    AND A.POSTING_nO = #{ postingNo }
+         	</when>
+         </choose>
+	</select>
+	<select id="selectFailTotalCount" parameterType="hashMap" resultType="_int">
+        SELECT
+               COUNT(*)
+          FROM TBL_APPLICATION_HISTORY A
+          JOIN TBL_POSTING B ON (A.POSTING_NO=B.POSTING_NO)
+         WHERE APPLICATION_FAIL_YN='Y'
+         <choose>
+         	<when test="criteria == 'ent'">
+		  		AND B.ENT_NO = #{ entNo }
+         	</when>
+         	<when test="criteria == 'project'">
+         		AND B.PROJECT_NO = #{ projectNo }
+         	</when>
+         	<when test="criteria == 'posting'">
+         	    AND A.POSTING_nO = #{ postingNo }
+         	</when>
+         </choose>
+	</select>
+	
+	<update id="passApplication" parameterType="_int">
+		UPDATE
+		       TBL_APPLICATION_HISTORY A
+		   SET A.APPLICATION_CONNECT_YN='Y'
+		     , A.APPLICATION_FAIL_YN='N'
+		 WHERE A.APPLICATION_NO = #{ applicationNo }
+	</update>
+	
+	<update id="failApplication" parameterType="_int">
+		UPDATE
+		       TBL_APPLICATION_HISTORY A
+		   SET A.APPLICATION_FAIL_YN='Y'
+		     , A.APPLICATION_CONNECT_YN='N'
+		 WHERE A.APPLICATION_NO = #{ applicationNo }
+	</update>
+</mapper>

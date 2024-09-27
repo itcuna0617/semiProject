@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="user.mapper.UserInfoMapper">
+	<resultMap type="user.model.dto.UserInfoDTO" id="userResultMap">
+		<id property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPassword" column="USER_PASSWORD"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userBalance" column="USER_BALANCE"/>
+		<result property="userAvgScore" column="USER_AVG_SCORE"/>
+		<result property="userDropYn" column="USER_DROP_YN"/>
+		<result property="userSanctionYn" column="USER_SANCTION_YN"/>
+		<result property="userActiveYn" column="USER_ACTIVE_YN"/>
+		<result property="userClassName" column="USER_CLASS_NAME"/>
+	</resultMap>
+	<select id="selectUserInfo" parameterType="_int" resultMap="userResultMap">
+		SELECT
+			   A.USER_NO
+			 , A.USER_NAME
+		 	 , A.USER_ID
+		 	 , A.USER_PASSWORD
+			 , A.USER_PHONE
+			 , A.USER_EMAIL
+			 , A.USER_BALANCE
+			 , A.USER_AVG_SCORE
+			 , A.USER_DROP_YN
+			 , A.USER_SANCTION_YN
+			 , A.USER_ACTIVE_YN
+			 , A.USER_CLASS_NAME
+		  FROM TBL_USER_INFO A
+		 WHERE A.USER_NO = #{ userNo }
+	</select>
+	
+	<update id="userInfoUpdate" parameterType="user.model.dto.UserInfoDTO">
+		UPDATE 
+			   TBL_USER_INFO A
+		   SET A.USER_NAME = #{	userName }
+		     , A.USER_EMAIL = #{ userEmail }
+		     , A.USER_PHONE = #{ userPhone }
+		 WHERE A.USER_NO = #{ userNo }
+	</update>
+	
+	<select id="selectEncryptedPwd" resultType="string">
+        SELECT 
+               A.USER_PASSWORD
+          FROM TBL_USER_INFO A
+         WHERE A.USER_DROP_YN = 'N'
+           AND A.USER_NO = #{ userNo }
+	</select>
+	
+	<update id="userInfoPasswordUpdate" parameterType="user.model.dto.UserInfoDTO">
+		UPDATE 
+			   TBL_USER_INFO A
+		   SET A.USER_PASSWORD = #{ userPassword }
+		 WHERE A.USER_NO = #{ userNo }
+	</update>
+	
+	<update id="userInfoDelete" parameterType="user.model.dto.UserInfoDTO">
+		UPDATE 
+			   TBL_USER_INFO A
+		   SET A.USER_DROP_YN = 'Y'
+		 WHERE A.USER_NO = #{ userNo }
+	</update>
+	<select id="selectUserInfoPasswordUpdate" parameterType="_int" resultType="string">
+		SELECT
+			   A.USER_PASSWORD
+		  FROM TBL_USER_INFO A
+		 WHERE A.USER_NO = #{ userNo }
+	</select>
+</mapper>

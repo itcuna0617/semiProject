@@ -1,0 +1,110 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+a {
+	text-decoration: none;
+}
+
+.entTitle {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../img/titleimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.entTitle p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.entMyPageWrap {
+	padding: 0px 300px 0px 300px;
+}
+
+.entMyPageRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.entIdSetting {
+	font-size: 20px;
+	padding: 15px 15px 0px 15px;
+	margin-left: auto; 
+    margin-right: auto;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+.entIdSetting tr td {
+	font-family: 'MinSans-Medium';
+	color: gray;
+	padding: 20px 20px 20px 20px;
+	text-align: left;
+}
+
+.entIdSetting a {
+	font-family: 'MinSans-Medium';
+	text-decoration: none;
+	color: black;
+	font-size: 25px;
+}
+
+.entIdSetting a:hover {
+	color: #c4c4c4;
+}
+
+.mypage-menu {
+	height: 200px;
+	background-color: #FBFAFA;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: 'MinSans-Medium';
+}
+
+.menu-title {
+	width: 200px;
+	text-align: center;
+	font-size: 23px;
+}
+
+.menu-content {
+	width: 500px;
+	font-size: 20px;
+	padding-left: 30px;
+}
+
+.menu-content a {
+	color: #4b4b4b;
+}
+
+.menu-content a:hover {
+	color: #c4c4c4;
+}
+
+.menu-wrap {
+	margin-top: 50px;
+}
+
+hr {
+	color: #c4c4c4;
+}
+
+.entMyPageRoot p {
+	font-family: 'MinSans-Medium';
+	color: #4b4b4b;
+}

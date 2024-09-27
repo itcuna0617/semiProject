@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.userAgreement {
+	display: inline-block; 
+	width:800px;
+	height:500px;
+	
+}
+.customerCenterTitle {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../img/customerCenterimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.customerCenterTitle p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.boardSettingWrap {
+	padding: 0px 300px 0px 300px;
+	width:800px;
+}
+
+.boardSettingRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.boardSettingRoot a {
+	font-family: 'MinSans-Medium';
+	text-decoration: none;
+	color: #4b4b4b;
+}
+
+.menubar {
+	border-bottom: 1px solid #c4c4c4;
+	margin:0 auto;
+	height: 60px; 
+	width: 800px; 
+	
+}
+
+.menubar ul li {
+	float : left; 
+	color: white;
+	background-color:  white;
+	margin:0 auto;
+	padding: 11px 0px 10px 40px;
+	line-height: 30px; 
+	text-align: center; 
+
+}
+.menubar #menuLink {
+	text-decoration:none;
+	color: #4b4b4b;
+	display: block;
+	width: 150px;
+	font-size: 20px;
+	font-family: 'MinSans-Medium';
+}
+.menubar #menuLink:hover {
+	color: gray;
+}
+
+label.searchCategory{
+	color: #4b4b4b;
+}
+
+.bodyForm{
+	font-family: 'MinSans-Medium';
+	text-align: center;
+	width: 700px;
+	height: 550px;
+	border: 1px solid #C4C4C4;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	margin-bottom: 100px;
+	padding: 40px;
+}
+
+.boardTable{
+	font-family: 'MinSans-Medium';
+	display: block;
+	width:800px;
+	height:500px;
+	text-align:right;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	padding: 40px;
+}
+
+

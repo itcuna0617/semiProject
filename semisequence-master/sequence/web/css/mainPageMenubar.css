@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.menubar {
+	border-bottom: 1px solid #c4c4c4;
+	margin:0 auto;
+	height: 60px; 
+	width: 800px; 
+	
+}
+
+.menubar ul li {
+	float : left; 
+	color: white;
+	background-color:  white;
+	margin:0 auto;
+	padding: 11px 0px 10px 40px;
+	line-height: 30px; 
+	text-align: center; 
+
+}
+.menubar #menuLink {
+	text-decoration:none;
+	color: #4b4b4b;
+	display: block;
+	width: 150px;
+	font-size: 20px;
+	font-family: 'MinSans-Medium';
+}
+.menubar #menuLink:hover {
+	color: gray;
+}

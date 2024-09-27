@@ -1,0 +1,59 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.title{
+	font-size: 50px;
+	color: white;
+	height: 500px;
+	text-align: center;
+	background-image: url(../img/film.jpg);
+	background-size: cover;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+.title p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.profileTable{
+	border: 1px solid #C4C4C4;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 40px;
+}
+
+.profileTable tr td{
+	border: 1px solid #C4C4C4;
+	font-size: 20px;
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

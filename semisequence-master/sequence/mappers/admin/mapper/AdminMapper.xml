@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.mapper.AdminMapper">
+	
+	<resultMap type="admin.model.dto.ApprovalDTO" id="ApprovalResultMap">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="entYn" column="ENT_YN"/>
+	</resultMap>
+	
+	<resultMap type="admin.model.dto.ApprovalAndEntInfoDTO" id="ApprovalAndEntInfoResultMap">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="entYn" column="ENT_YN"/>
+		<result property="entName" column="ENT_NAME"/>
+		<result property="entLicensePdf" column="ENT_LICENSE_PDF"/>
+		<result property="entLicensePath" column="ENT_LICENSE_PATH"/>
+	</resultMap>
+	
+	<resultMap type="admin.model.dto.UserInfoDTO" id="UserInfoResultMap">
+		<id property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="UserId" column="USER_ID"/>
+		<result property="UserPassword" column="USER_PASSWORD"/>
+		<result property="UserAddress" column="USER_ADDRESS"/>
+		<result property="UserPhone" column="USER_PHONE"/>
+		<result property="UserEmail" column="USER_EMAIL"/>
+		<result property="UserBalnce" column="USER_BALANCE"/>
+		<result property="UserAvgScore" column="USER_AVG_SCORE"/>
+		<result property="UserDropYn" column="USER_DROP_YN"/>
+		<result property="UserSanctionYn" column="USER_SANCTION_YN"/>
+		<result property="UserActiveYn" column="USER_ACTIVE_YN"/>
+		<result property="UserClassName" column="USER_CLASS_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.EntDTO" id="entResultMap">
+      <id property="entNo" column="ENT_NO"/>
+      <result property="entName" column="ENT_NAME"/>
+      <result property="entId" column="ENT_ID"/>
+      <result property="entPwd" column="ENT_PWD"/>
+      <result property="entPhone" column="ENT_PHONE"/>
+      <result property="entEmail" column="ENT_EMAIL"/>
+      <result property="entDropYn" column="ENT_DROP_YN"/>
+      <result property="entSanctionYn" column="ENT_SANCTION_YN"/>
+      <result property="entActiveYn" column="ENT_ACTIVE_YN"/>
+	</resultMap>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM TBL_APPROVAL A
+	</select>
+	
+	<select id="selectApproval" resultMap="ApprovalResultMap">
+		SELECT
+			   A.APPROVAL_NO
+			 , A.ENT_NO
+			 , A.ENT_YN
+		  FROM TBL_APPROVAL A
+	</select>
+	<select id="selectApprovalAndEntInfoList" parameterType="hashmap" resultMap="ApprovalAndEntInfoResultMap">
+		SELECT
+			   A.RNUM
+			 , A.APPROVAL_NO
+			 , A.ENT_YN
+			 , A.ENT_NO
+			 , D.ENT_NAME
+			 , E.ENT_LICENSE_PDF
+			 , E.ENT_LICENSE_PATH
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.APPROVAL_NO
+					 , B.ENT_YN
+					 , B.ENT_NO
+				  FROM (SELECT 
+						  	   C.APPROVAL_NO
+							 , C.ENT_YN
+							 , C.ENT_NO
+						  FROM TBL_APPROVAL C
+						 ORDER BY C.APPROVAL_NO DESC
+				  )B
+			  <![CDATA[
+                WHERE ROWNUM <= #{ selectCriteria.endRow }
+              ]]>
+		  )A
+	  JOIN TBL_ENT_INFO D ON (A.ENT_NO = D.ENT_NO)
+	  JOIN ENT_LICENSE E ON (A.ENT_NO = E.ENT_NO)
+	 WHERE A.ENT_NO = #{ entNo }
+	   AND A.RNUM >= #{ selectCriteria.startRow } 
+	</select>
+	
+	<select id="selectUserInfo" resultMap="UserInfoResultMap">
+		SELECT
+			   A.USER_NO
+			 , A.USER_NAME
+			 , A.USER_ID
+			 , A.USER_ADDRESS
+			 , A.USER_PHONE
+			 , A.USER_EMAIL
+			 , A.USER_SANCTION_YN
+		  FROM TBL_USER_INFO A
+		 ORDER BY USER_NO
+	</select>
+	
+	<update id="userStatusUpdate" parameterType="string">
+		UPDATE TBL_USER_INFO
+		   SET USER_SANCTION_YN = 'Y'
+		 WHERE USER_NO = #{ userNo }
+	</update>
+	
+	<update id="userStatusUpdateY" parameterType="string">
+		UPDATE TBL_USER_INFO
+		   SET USER_SANCTION_YN = 'N'
+		 WHERE USER_NO = #{ userNo }
+	</update>
+	
+	<select id="selectEntInfo" resultMap="entResultMap">
+		SELECT
+			   A.ENT_NO
+			 , A.ENT_NAME
+			 , A.ENT_ID
+			 , A.ENT_PHONE
+			 , A.ENT_EMAIL
+			 , A.ENT_SANCTION_YN
+		  FROM TBL_ENT_INFO A 
+		 ORDER BY ENT_NO
+	</select>
+	
+	<update id="entStatusUpdate" parameterType="string">
+		UPDATE TBL_ENT_INFO
+		   SET ENT_SANCTION_YN = 'Y'
+		 WHERE ENT_NO = #{ entNo }
+	</update>
+	
+	<update id="entStatusUpdateY" parameterType="string">
+		UPDATE TBL_ENT_INFO
+		   SET ENT_SANCTION_YN = 'N'
+		 WHERE ENT_NO = #{ entNo }
+	</update>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user.mapper.UserApplicationMapper">
+
+	<resultMap type="user.model.dto.UserApplicationHistoryDTO" id="userApplicationResultMap">
+		<id property="applicationNo" column="APPLICATION_NO"/>
+		<result property="applicationConnectYn" column="APPLICATION_CONNECT_YN"/>
+		<result property="applicationDate" column="APPLICATION_DATE"/>
+		<result property="applicationIntro" column="APPLICATION_INTRO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="postingNo" column="POSTING_NO"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+	</resultMap>
+	
+	<resultMap type="user.model.dto.UserPostingDTO" id="userPostingResultMap">
+		<id property="postingNo" column="POSTING_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDetail" column="POSTING_DETAIL"/>
+		<result property="postingOpenYn" column="POSTING_OPEN_YN"/>
+		<result property="postingDeleteYn" column="POSTING_DELETE_YN"/>
+		<result property="views" column="VIEWS"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+		<result property="projectNo" column="PROJECT_NO"/>
+		<result property="rNum" column="RNUM"/>
+		<result property="entNo" column="ENT_NO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="job_no" column="JOB_NO"/>
+		<result property="genreNo" column="GENRE_NO"/>
+	</resultMap>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM TBL_APPLICATION_HISTORY A
+		 WHERE A.USER_NO = ${ userNo }
+	</select>
+	
+	<resultMap type="user.model.dto.UserAppliactionByPostingDTO" id="userApplicationbyPostingResultMap">
+		<id property="applicationNo" column="APPLICATION_NO"/>
+		<result property="applicationConnectYn" column="APPLICATION_CONNECT_YN"/>
+		<result property="applicationDate" column="APPLICATION_DATE"/>
+		<result property="applicationIntro" column="APPLICATION_INTRO"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="postingNo" column="POSTING_NO"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="postingTitle" column="POSTING_TITLE"/>
+		<result property="postingDate" column="POSTING_DATE"/>
+	</resultMap>
+	
+	<select id="selectUSerApplicationByPosting" parameterType="hashmap" resultMap="userApplicationbyPostingResultMap">
+		SELECT
+			   A.RNUM
+			 , A.APPLICATION_NO
+			 , A.APPLICATION_CONNECT_YN
+			 , A.APPLICATION_DATE
+			 , A.APPLICATION_INTRO
+			 , A.USER_NO
+			 , A.POSTING_NO
+			 , A.USER_PROFILE_NO
+			 , D.POSTING_TITLE
+			 , D.POSTING_DATE
+		  FROM (SELECT ROWNUM RNUM
+		 			 , B.APPLICATION_NO
+					 , B.APPLICATION_CONNECT_YN
+					 , B.APPLICATION_DATE
+					 , B.APPLICATION_INTRO
+					 , B.USER_NO
+					 , B.POSTING_NO
+					 , B.USER_PROFILE_NO
+				  FROM (SELECT C.APPLICATION_NO
+							 , C.APPLICATION_CONNECT_YN
+							 , C.APPLICATION_DATE
+							 , C.APPLICATION_INTRO
+							 , C.USER_NO
+							 , C.POSTING_NO
+							 , C.USER_PROFILE_NO
+						  FROM TBL_APPLICATION_HISTORY C
+		  				 ORDER BY C.APPLICATION_DATE DESC
+		  				) B
+		  		<![CDATA[
+                WHERE ROWNUM <= #{ selectCriteria.endRow }
+                ]]>
+              ) A
+          JOIN TBL_POSTING D ON (A.POSTING_NO = D.POSTING_NO)
+		 WHERE A.USER_NO = #{ userNo }  
+		   AND A.RNUM >= #{ selectCriteria.startRow } 
+	</select>
+	
+</mapper>

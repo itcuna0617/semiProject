@@ -1,0 +1,63 @@
+@charset "UTF-8";
+@import "../reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.buttons{
+	background-color: white;
+	color: skyblue;
+	border: 2px solid skyblue;
+	border-radius: 5px;
+}
+.buttons:hover{
+	background-color: skyblue;
+	color: white;
+}
+.title {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../../img/titleimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.title p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.userMyPageWrap {
+	padding: 0px 300px 0px 300px;
+}
+
+.userMyPageRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+.applicationTable{
+	margin: 30px auto 30px auto;
+	border: 5px solid #eee;
+}
+
+.menuTitle{
+	color: black;
+}
+.menuTitle > td{
+	font-size: 20px;
+	font-weight: 800;
+	border-bottom: 5px solid #eee;
+	width: 240px;
+	padding: 20px 5px 20px 0px;
+}
+.menuText > td{
+	padding: 20px 5px 20px 0px;
+}

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user.mapper.UserProfileMapper">
+	<resultMap type="user.model.dto.UserProfileDTO" id="userProfileResultMap">
+		<id property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userPhoto" column="USER_PHOTO"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userArea" column="USER_AREA"/>
+		<result property="userMiniTitle" column="USER_MINI_TITLE"/>
+		<result property="userMainText" column="USER_MAIN_TEXT"/>
+		<result property="userResume" column="USER_RESUME"/>
+		<result property="userOpenYN" column="USER_OPEN_YN"/>
+		<result property="userNo" column="USER_NO"/>
+		
+		<collection property="job" javaType="user.model.dto.JobDTO">
+     	    <id property="jobNo" column="JOB_NO"/>
+     	    <result property="jobName" column="JOB_NAME"/>
+     	</collection>
+	</resultMap>
+	
+	<!-- 프로필 리스트 조회 -->
+	<select id="selectUserProfile" parameterType="_int" resultMap="userProfileResultMap">
+		SELECT
+			   A.USER_PROFILE_NO
+			 , A.USER_NAME
+			 , A.USER_PHOTO
+			 , A.USER_BIRTH
+			 , A.USER_AREA
+			 , A.USER_MINI_TITLE
+			 , A.USER_MAIN_TEXT
+			 , A.USER_RESUME
+			 , A.USER_OPEN_YN
+			 , A.USER_NO
+			 , A.JOB_NO
+			 , B.JOB_NAME
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		 WHERE A.USER_NO = #{ userNo }
+		   AND A.USER_OPEN_YN = 'Y'
+		   AND A.USER_DELETE_YN = 'N'
+ 	</select>
+ 	
+ 	<select id="selectUserProfileByNo" parameterType="_int" resultMap="userProfileResultMap">
+		SELECT
+			   A.USER_PROFILE_NO
+			 , A.USER_NAME
+			 , A.USER_PHOTO
+			 , A.USER_BIRTH
+			 , A.USER_AREA
+			 , A.USER_MINI_TITLE
+			 , A.USER_MAIN_TEXT
+			 , A.USER_RESUME
+			 , A.USER_OPEN_YN
+			 , A.USER_NO
+			 , A.JOB_NO
+			 , B.JOB_NAME
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+		   AND A.USER_DELETE_YN = 'N'
+ 	</select>
+ 	
+ 	<insert id="insertUserProfile" parameterType="user.model.dto.UserProfileDTO">
+	 	INSERT 
+	          INTO TBL_USER_PROFILE A
+	        (
+	          A.USER_PROFILE_NO
+			, A.USER_NAME
+			, A.USER_PHOTO
+			, A.USER_BIRTH
+			, A.USER_AREA
+			, A.USER_MINI_TITLE
+			, A.USER_MAIN_TEXT
+			, A.USER_RESUME
+			, A.USER_OPEN_YN
+			, A.USER_NO
+			, A.JOB_NO
+	        )
+	        VALUES 
+	        (
+	          SEQ_TBL_USER_PROFILE.NEXTVAL
+	        , #{ userName }
+	        , #{ userPhoto }
+	        , #{ userBirth }
+	        , #{ userArea }
+	        , #{ userMiniTitle }
+	        , #{ userMainText }
+	        , #{ userResume }
+	        , 'Y'
+	        , #{ userNo }
+	        , #{ jobNo }
+	        )
+ 	</insert>
+ 	<select id="selectUserProfileNoLastSequence" resultType="_int">
+ 		SELECT
+ 			   SEQ_TBL_USER_PROFILE.CURRVAL
+			 FROM DUAL
+ 	</select>
+ 	<insert id="insertUserPhoto" parameterType="user.model.dto.UserPhotoDTO" >
+ 		INSERT 
+	          INTO TBL_USER_PHOTO A
+	        (
+	          A.USER_PHOTO_NO
+			, A.USER_PHOTO_ORIGINAL_SAVED_PATH
+			, A.USER_PHOTO_SAVED_NAME
+			, A.USER_PHOTO_SAVED_PATH
+			, A.USER_PHOTO_ACTIVE_YN
+			, A.USER_PROFILE_NO
+	        )
+	        VALUES 
+	        (
+	          SEQ_TBL_USER_PHOTO.NEXTVAL
+	        , #{ userPhotoOriginalSavedPath }
+	        , #{ userPhotoSavedName }
+	        , #{ userPhotoSavedPath }
+	        , 'Y'
+	        , #{ userProfileNo }
+	        )
+ 	</insert>
+ 	
+ 	<select id="selectUserProfileByProfileNo" parameterType="int" resultMap="userProfileResultMap">
+ 		SELECT
+			   A.USER_PROFILE_NO
+			 , A.USER_NAME
+			 , A.USER_PHOTO
+			 , A.USER_BIRTH
+			 , A.USER_AREA
+			 , A.USER_MINI_TITLE
+			 , A.USER_MAIN_TEXT
+			 , A.USER_RESUME
+			 , A.USER_OPEN_YN
+			 , A.USER_NO
+			 , A.JOB_NO
+			 , B.JOB_NAME
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+		   AND A.USER_DELETE_YN = 'N'
+ 	</select>
+ 	
+ 	<update id="updateUserProfile" parameterType="user.model.dto.UserProfileDTO">
+ 		UPDATE 
+               TBL_USER_PROFILE A
+           SET A.USER_PHOTO = #{ userPhoto }
+			 , A.USER_AREA = #{ userArea }
+			 , A.USER_MINI_TITLE = #{ userMiniTitle }
+			 , A.USER_MAIN_TEXT = #{ userMainText }
+			 , A.USER_RESUME = #{ userResume }
+			 , A.JOB_NO = #{ jobNo }
+         WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</update>
+ 	
+ 	<update id="updateUserPhoto">
+ 		UPDATE
+ 			   TBL_USER_PHOTO A
+ 		   SET A.USER_PHOTO_ORIGINAL_SAVED_PATH = #{ userPhotoOriginalSavedPath }
+			 , A.USER_PHOTO_SAVED_NAME = #{ userPhotoSavedName }
+			 , A.USER_PHOTO_SAVED_PATH = #{ userPhotoSavedPath }
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</update>
+ 	
+ 	<insert id="insertUserAddFile" parameterType="user.model.dto.UserAddFileDTO">
+ 		INSERT 
+	          INTO TBL_USER_ADD_FILE A
+	        (
+	          A.USER_FILE_NO
+			, A.USER_FILE_ORIGINAL_NAME
+			, A.USER_FILE_SAVED_NAME
+			, A.USER_FILE_ACTIVE_YN
+			, A.USER_PROFILE_NO
+	        )
+	        VALUES 
+	        (
+	          SEQ_TBL_USER_ADD_FILE.NEXTVAL
+	        , #{ userFileOriginalName }
+	        , #{ userFileSavedName }
+	        , 'Y'
+	        , #{ userProfileNo }
+	        )
+ 	</insert>
+ 	
+ 	<resultMap type="user.model.dto.UserAddFileDTO" id="userAddFileResultMap">
+		<id property="userFileNo" column="USER_FILE_NO"/>
+		<result property="userFileOriginalName" column="USER_FILE_ORIGINAL_NAME"/>
+		<result property="userFileSavedName" column="USER_FILE_SAVED_NAME"/>
+		<result property="userFileActiveYn" column="USER_FILE_ACTIVE_YN"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+	</resultMap>
+ 	
+ 	<select id="selectUserAddFileByProfileNo" parameterType="int" resultMap="userAddFileResultMap">
+ 		SELECT
+ 			   A.USER_FILE_NO
+			 , A.USER_FILE_ORIGINAL_NAME
+			 , A.USER_FILE_SAVED_NAME
+			 , A.USER_FILE_ACTIVE_YN
+			 , A.USER_PROFILE_NO
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</select>
+ 	
+ 	<select id="selectUserAddFileByFileNo" parameterType="int" resultMap="userAddFileResultMap">
+ 		SELECT
+ 			   A.USER_FILE_NO
+			 , A.USER_FILE_ORIGINAL_NAME
+			 , A.USER_FILE_SAVED_NAME
+			 , A.USER_FILE_ACTIVE_YN
+			 , A.USER_PROFILE_NO
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_FILE_NO = #{ userFileNo }
+ 	</select>
+ 	
+ 	<delete id="deleteUserAddFile" parameterType="int">
+ 		DELETE
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</delete>
+ 	<delete id="deleteUserPhoto" parameterType="int">
+ 		DELETE
+ 		  FROM TBL_USER_PHOTO A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</delete>
+ 	<update id="deleteUserProfile" parameterType="int">
+ 		 UPDATE
+ 			   TBL_USER_PROFILE A
+ 		   SET A.USER_DELETE_YN = 'Y'
+ 		     , A.USER_PHOTO = '/sequence/web/resources/upload/noProfilePhoto/noProfilePhoto.png'
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</update>
+ 	
+ 	<select id="selectUserAddFileSavedName" parameterType="int" resultMap="userAddFileResultMap">
+ 		SELECT
+ 			   A.USER_FILE_SAVED_NAME
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</select>
+ 	
+ 	<resultMap type="user.model.dto.UserPhotoDTO" id="userPhotoResultMap">
+		<id property="userPhotoNo" column="USER_PHOTO_NO"/>
+		<result property="userPhotoOriginalSavedPath" column="USER_PHOTO_ORIGINAL_SAVED_PATH"/>
+		<result property="userPhotoSavedName" column="USER_PHOTO_SAVED_NAME"/>
+		<result property="userPhotoSavedPath" column="USER_PHOTO_SAVED_PATH"/>
+		<result property="userPhotoActiveYn" column="USER_PHOTO_ACTIVE_YN"/>
+		<result property="userProfileNo" column="USER_PROFILE_NO"/>
+	</resultMap>
+	
+ 	<select id="selectUserPhotoByUserProfileNo" parameterType="int" resultMap="userPhotoResultMap">
+ 		SELECT
+ 			   A.USER_PHOTO_ORIGINAL_SAVED_PATH
+ 			 , A.USER_PHOTO_SAVED_NAME
+ 			 , A.USER_PHOTO_SAVED_PATH
+ 		  FROM TBL_USER_PHOTO A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 		   AND A.USER_PHOTO_ACTIVE_YN = 'Y'
+ 	</select>
+ 	
+ 	<select id="selectDeleteFile" parameterType="user.model.dto.UserAddFileDTO" resultMap="userAddFileResultMap">
+ 		SELECT
+ 			   A.USER_FILE_NO
+			 , A.USER_FILE_ORIGINAL_NAME
+			 , A.USER_FILE_SAVED_NAME
+			 , A.USER_FILE_ACTIVE_YN
+			 , A.USER_PROFILE_NO
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_FILE_NO = #{ userFileNo }
+ 	</select>
+ 	
+ 	<!-- 프로필 수정 시 프로필 정보 수정 -->
+ 	<update id="updateUserProfileByUserProfileInfo" parameterType="user.model.dto.UserProfileDTO">
+ 		UPDATE 
+               TBL_USER_PROFILE A
+           SET A.USER_AREA = #{ userArea }
+			 , A.USER_MINI_TITLE = #{ userMiniTitle }
+			 , A.USER_MAIN_TEXT = #{ userMainText }
+			 , A.USER_RESUME = #{ userResume }
+			 , A.JOB_NO = #{ jobNo }
+			 <if test="userPhoto != null">
+			 	, A.USER_PHOTO = #{ userPhoto }
+			 </if>
+         WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</update>
+ 	<update id="updateUserPhotoByUserProfileInfo" parameterType="user.model.dto.UserPhotoDTO">
+ 		UPDATE
+ 			   TBL_USER_PHOTO A
+ 		   SET A.USER_PHOTO_ORIGINAL_SAVED_PATH = #{ userPhotoOriginalSavedPath }
+			 , A.USER_PHOTO_SAVED_NAME = #{ userPhotoSavedName }
+			 , A.USER_PHOTO_SAVED_PATH = #{ userPhotoSavedPath }
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</update>
+ 	<insert id="updateAddFileByUserProfileInfo" parameterType="user.model.dto.UserAddFileDTO">
+ 		INSERT 
+	          INTO TBL_USER_ADD_FILE A
+	        (
+	          A.USER_FILE_NO
+			, A.USER_FILE_ORIGINAL_NAME
+			, A.USER_FILE_SAVED_NAME
+			, A.USER_FILE_ACTIVE_YN
+			, A.USER_PROFILE_NO
+	        )
+	        VALUES 
+	        (
+	          SEQ_TBL_USER_ADD_FILE.NEXTVAL
+	        , #{ userFileOriginalName }
+	        , #{ userFileSavedName }
+	        , 'Y'
+	        , #{ userProfileNo }
+	        )
+ 	</insert>
+ 	<delete id="updatedeleteFile" parameterType="user.model.dto.UserAddFileDTO">
+ 		DELETE
+ 		  FROM TBL_USER_ADD_FILE A
+ 		 WHERE A.USER_FILE_NO = #{userFileNo}
+ 	</delete>
+ 	
+ 	<!-- 프로필 수정 시 프로필 사진 수정되면 기존 사진 삭제하기 위한 사진 정보 select -->
+ 	<select id="selectDeleteBeforePhoto" parameterType="_int" resultMap="userProfileResultMap">
+ 		SELECT
+ 			   A.USER_PHOTO
+ 		  FROM TBL_USER_PROFILE A
+ 		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+ 	</select>
+</mapper>

@@ -1,0 +1,78 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.loginForm {
+	font-family: 'MinSans-Medium';
+	text-align: center;
+	width: 522px;
+	height: 550px;
+	border: 1px solid #C4C4C4;
+	border-radius: 5px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	padding: 40px;
+}
+
+.loginForm h1 {
+	font-size: 40px;
+	margin-bottom: 50px;
+}
+
+.loginInputTable {
+	display:inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 20px;
+	text-align: left;
+}
+
+.loginInputTable tr {
+	height: 70px;
+}
+
+.loginInputTable tr td{
+	vertical-align: bottom;
+}
+
+.loginInputTable input {
+	width: 423px;
+	height: 55px;
+	border: 1px solid #c4c4c4;
+	border-radius: 10px;
+}
+
+.loginForm button {
+	font-family: 'MinSans-Medium';
+	font-size: 20px;
+	width: 423px;
+	height: 55px;
+	background-color: #4b4b4b;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.loginForm button:hover {
+	background-color: #c4c4c4;
+}
+
+input::placeholder {
+	padding-left: 20px;
+	font-family: 'MinSans-Medium';
+	font-size: 20px;
+}
+
+input {
+	padding-left: 20px;
+	font-family: 'MinSans-Medium';
+	font-size: 20px;
+}

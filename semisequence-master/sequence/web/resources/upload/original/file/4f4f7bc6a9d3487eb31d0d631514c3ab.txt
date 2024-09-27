@@ -1,0 +1,33 @@
+카데고리 select
+메뉴 select
+메뉴 , 수량 입력받음
+
+메뉴 > 
+메뉴코드와 price를 저장할 변수 생성
+메뉴이름을 for문돌려서 code랑 price를 가져와서 변수에 저장
+code는 오더메뉴 dto 에 필요
+price는 오더 dto에 총 가격을 구하는데 필요
+
+수량 > 
+총 가격을 담을 변수를 do문 밖에서 선언
+위에서 가져온 가격 x 수량을 하면 총 가격에 담기
+
+위에서 가져온 메뉴코드, 총가격을 ordermenu DTO에 담음(주문  한 건의 느낌이니깐 do문 위에 arraylist를 생성해주고 .add해서 한건의 ordermenu를 담아준다.) (반복해서 주문 받을 것이니까)
+
+주문 더 받을지 안받을지 확인하고 do문 종료
+
+------------------------
+주문이 끝나면 총가격과 ordermenuList를 controller에게 넘김(order, orderMenu 테이블을 인서트 할 것임)
+
+오더 테이블인서트의
+필요한 날짜 시간을 controller에서 가공하고 orderDTO에 다 담아서 넘김(orderDTO에는 OrderMenuList도 담아서 넘기는게 좋아서 추가해줬음)
+
+서비스에서 먼저 오더 테이블을 인서트 하고 시퀀스 돌린 주문코드를 select 해옴
+
+orderMenuList에 방금 가져온 코드를 반복문을 사용해서 넣어줌
+(주문코드가 1번이면 ??건의 주문에 1이라는 코드를 넣는 작업)
+
+이후 주문 건 당 orderMenu 테이블을 추가해야 함으로 orderMenuList.size의 for문을 돌려서
+insert작업을 해줌
+
+이후 트랜잭션 제어와  view에 출력문 작성하면 끝.

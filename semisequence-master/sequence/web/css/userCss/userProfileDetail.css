@@ -1,0 +1,82 @@
+@charset "UTF-8";
+@import "../reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+button{
+	background-color: white;
+	color: skyblue;
+	border: 2px solid skyblue;
+	border-radius: 5px;
+}
+button:hover{
+	background-color: skyblue;
+	color: white;
+}
+.title {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../../img/titleimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.title p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.userMyPageWrap {
+	padding: 0px 300px 0px 300px;
+}
+
+.userMyPageRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.userInfoTitle{
+	margin: 30px 0px 15px 15px;
+	font-size: 25px;
+	font-weight: 800;
+}
+.userPhoto{
+	margin-left: 15px;
+	margin-right: 50px;
+}
+
+.userInfos{
+	background-color: #eee;
+	height:160px;
+}
+.userInfo{
+	font-weight: 600;
+	width: 500px;
+	margin: 14px;
+	display: block;
+}
+.userInfoText{
+	height: 150px;
+	width: 500px;
+	border: 2px solid #eee;
+	padding-left: 10px;
+}
+
+.userInfoText a{
+	font-family: 'MinSans-Medium';
+	text-decoration: none;
+	color: #4b4b4b;
+}
+
+.userInfoText a:hover{
+	color: skyblue;
+}

@@ -1,0 +1,72 @@
+@charset "UTF-8";
+@import "reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+header {
+	padding: 0px 300px 0px 300px !important;
+    border-bottom: 1px solid #4b4b4b;
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.headerDiv{
+	margin: 30px 40px 10px 40px;
+}
+
+.headerTitle {
+	font-family: 'MinSans-Medium';
+	font-style: italic;
+	font-size: 40px;
+	color: #4b4b4b;
+	margin: 20px 0px 20px 0px;
+	display: inline-block;
+}
+
+.headerTitle a {
+    text-decoration: none;
+    color: #4b4b4b;
+}
+
+.headerTitle a:hover {
+    color: gray;
+}
+
+.headerNav {
+    display: inline-block !important;
+}
+
+.headerNav a {
+    font-family: MinSans-Medium;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.login {
+    color: #4b4b4b;
+}
+
+.login:hover {
+    color: gray;
+}
+
+.registMember {
+    background-color: #4b4b4b;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+.registMember:hover {
+    background-color: gray;
+}
+
+nav p {
+    font-family: 'MinSans-Medium';
+}

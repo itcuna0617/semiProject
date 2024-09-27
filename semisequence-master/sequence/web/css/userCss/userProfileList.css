@@ -1,0 +1,85 @@
+@charset "UTF-8";
+@import "../reset.css";
+@font-face {
+    font-family: 'MinSans-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+button{
+	background-color: white;
+	color: skyblue;
+	border: 2px solid skyblue;
+	border-radius: 5px;
+}
+button:hover{
+	background-color: skyblue;
+	color: white;
+}
+.title {
+	font-family: 'MinSans-Medium';
+	font-size: 50px;
+	color: white;
+	height: 300px;
+	text-align: center;
+	background-image: url(../../img/titleimg.jpg);
+	background-size: cover;
+	position: relative;
+}
+
+.title p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.userMyPageWrap {
+	padding: 0px 300px 0px 300px;
+}
+
+.userMyPageRoot {
+	margin: 10px 0px 10px 0px;
+	padding: 10px 0px 10px 30px;
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.photo{
+	margin-left: 15px
+}
+.profiles{
+	background-color: #eee;
+	margin: 30px 10px;
+	width: 500px;
+	height: 150px;
+	border-radius: 10px;
+}
+.profiles td{
+	width: 300px;
+}
+.profiles:hover{
+	background-color: skyblue;
+}
+
+.miniTitle{
+	font-size: 18px;
+	font-weight:800;
+	color : gray;
+	display: block;
+	margin: 15px 25px;
+}
+.profileTexts{
+	text-align: left;
+}
+.profileText{
+	display: block;
+	font-weight: 700;
+	margin: 25px 25px;
+}
+.userName{
+	font-size: 30px;
+}
+.alert{
+	color: red;
+	display: none;
+}

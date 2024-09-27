@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberDAO">
+	<resultMap type="member.model.dto.MemberDTO" id="userResultMap">
+		<id property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPassword" column="USER_PASSWORD"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userBalance" column="USER_BALANCE"/>
+		<result property="userAvgScore" column="USER_AVG_SCORE"/>
+		<result property="userDropYn" column="USER_DROP_YN"/>
+		<result property="userSanctionYn" column="USER_SANCTION_YN"/>
+		<result property="userActiveYn" column="USER_ACTIVE_YN"/>
+		<result property="userClassName" column="USER_CLASS_NAME"/>
+	</resultMap>
+
+	<select id="selectUserEncryptedPwd" parameterType="string" resultType="string">
+        SELECT 
+               A.USER_PASSWORD
+          FROM TBL_USER_INFO A
+         WHERE A.USER_DROP_YN = 'N'
+           AND A.USER_SANCTION_YN = 'N'
+           AND A.USER_ACTIVE_YN = 'N'
+           AND A.USER_ID = #{ userId }
+	</select>
+	
+	<select id="selectUserLoginMember" parameterType="string" resultMap="userResultMap">
+		SELECT 
+			   A.USER_NO
+			 , A.USER_NAME
+		     , A.USER_ID
+		     , A.USER_PASSWORD
+		     , A.USER_ADDRESS
+		     , A.USER_PHONE
+		     , A.USER_EMAIL
+		     , A.USER_BALANCE
+		     , A.USER_AVG_SCORE
+		     , A.USER_DROP_YN
+		     , A.USER_SANCTION_YN
+		     , A.USER_ACTIVE_YN
+		     , A.USER_CLASS_NAME
+		 FROM  TBL_USER_INFO A
+		WHERE  A.USER_DROP_YN = 'N'
+		  AND  A.USER_SANCTION_YN = 'N'
+		  AND  A.USER_ACTIVE_YN = 'N'
+		  AND  A.USER_ID = #{ userId }
+	</select>
+	
+	<insert id="insertMember" parameterType="member.model.dto.MemberDTO">
+        INSERT 
+          INTO TBL_USER_INFO A
+        (
+          A.USER_NO
+        , A.USER_NAME
+        , A.USER_ID
+        , A.USER_PASSWORD
+        , A.USER_ADDRESS
+        , A.USER_PHONE
+        , A.USER_EMAIL
+        , A.USER_CLASS_NAME
+        )
+        VALUES 
+        (
+          SEQ_TBL_USER_INFO.NEXTVAL
+        , #{ userName }
+        , #{ userId }
+        , #{ userPassword }
+        , #{ userAddress }
+        , #{ userPhone }
+        , #{ userEmail }
+        , '일반'
+        )
+	</insert>
+	
+	<update id="updateMemberPassword" parameterType="member.model.dto.MemberDTO">
+		UPDATE
+               TBL_USER_INFO A
+           SET A.USER_PASSWORD = #{ userPassword }
+         WHERE A.USER_ID = #{ userId }
+	</update>
+	
+	<insert id="insertMemberLoginSuccessHistory" parameterType="member.model.dto.MemberDTO">
+		INSERT 
+          INTO TBL_USER_LOGIN A
+        (
+          A.USER_LOGIN_NO
+        , A.USER_LOGIN_TIME
+        , A.USER_LOGIN_SUCCESS_YN
+        , A.USER_NO
+        )
+        VALUES 
+        (
+          SEQ_TBL_USER_LOGIN.NEXTVAL
+        , SYSDATE
+        , 'Y'
+        , #{ userNo }
+        )
+	</insert>
+</mapper>

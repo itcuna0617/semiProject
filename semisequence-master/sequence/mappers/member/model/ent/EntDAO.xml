@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ent.EntInfoMapper">
+	<resultMap type="ent.model.dto.EntDTO" id="entResultMap">
+      <id property="entNo" column="ENT_NO"/>
+      <result property="entName" column="ENT_NAME"/>
+      <result property="entId" column="ENT_ID"/>
+      <result property="entPwd" column="ENT_PWD"/>
+      <result property="entPhone" column="ENT_PHONE"/>
+      <result property="entEmail" column="ENT_EMAIL"/>
+      <result property="entDropYn" column="ENT_DROP_YN"/>
+      <result property="entSanctionYn" column="ENT_SANCTION_YN"/>
+      <result property="entActiveYn" column="ENT_ACTIVE_YN"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.PaymentHistoryDTO" id="paymentResultMap">
+		<id property="entPaymentNo" column="ENT_PAYMENT_NO"/>
+		<result property="entPaymentTime" column="ENT_PAYMENT_TIME"/>
+		<result property="planName" column="PLAN_NAME"/>
+		<result property="entNo" column="ENT_NO"/>
+		
+		<association property="planPrice" resultMap="ratePlanResultMap"></association>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.RatePlanDTO" id="ratePlanResultMap">
+		<id property="planName" column="PLAN_NAME"/>
+		<result property="planPrice" column="PLAN_PRICE"/>
+		<result property="planPosting" column="PLAN_POSTING"/>
+		<result property="planOffer" column="PLAN_OFFER"/>
+		<result property="planProject" column="PLAN_PROJECT"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.EntProfileDTO" id="entProFileResultMap">
+		<id property="entProfNo" column="ENT_PROF_NO"/>
+		<result property="entPhoto" column="ENT_PHOTO"/>
+		<result property="entIntro" column="ENT_INTRO"/>
+		<result property="entResume" column="ENT_RESUME"/>
+		<result property="entNo" column="ENT_NO"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.EntPhotoDTO" id="entPhotoResultMap">
+		<id property="entPhotoNo" column="ENT_PHOTO_NO"/>
+		<result property="photoOriginalSavedPath" column="ENT_PHOTO_ORIGINAL_SAVED_PATH"/>
+		<result property="photoSavedName" column="ENT_PHOTO_SAVED_NAME"/>
+		<result property="photoSavedPath" column="ENT_PHOTO_SAVED_PATH"/>
+		<result property="entProfNo" column="ENT_PROF_NO"/>
+	</resultMap>
+	
+	<resultMap type="ent.model.dto.RatePlanByEntDTO" id="ratePlanByEntResultMap">
+		<id property="entNo" column="ENT_NO"/>
+		<result property="entPaymentNo" column="ENT_PAYMENT_NO"/>
+		<result property="planName" column="PLAN_NAME"/>
+		<result property="planOfferCount" column="PLAN_OFFER_COUNT"/>
+		<result property="planProjectCount" column="PLAN_PROJECT_COUNT"/>
+	</resultMap>
+
+	<select id="selectEncryptedPwd" parameterType="string" resultType="string">
+        SELECT 
+               A.ENT_PWD 
+          FROM TBL_ENT_INFO A
+         WHERE A.ENT_DROP_YN = 'N'
+           AND A.ENT_SANCTION_YN = 'N'
+           AND A.ENT_ACTIVE_YN = 'N'
+           AND A.ENT_ID = #{ entId }
+	</select>
+	
+	<update id="entInfoDelete" parameterType="ent.model.dto.EntDTO">
+		UPDATE TBL_ENT_INFO
+		   SET ENT_DROP_YN = 'Y'
+		 WHERE ENT_NO = #{ entNo }
+	</update>
+	
+	<update id="entInfoPasswordUpdate" parameterType="ent.model.dto.EntDTO">
+		UPDATE 
+			   TBL_ENT_INFO A
+		   SET A.ENT_PWD = #{ entPwd }
+		 WHERE A.ENT_NO = #{ entNo }
+	</update>
+	
+	<update id="entInfoUpdate" parameterType="ent.model.dto.EntDTO">
+		UPDATE
+			   TBL_ENT_INFO
+		   SET ENT_NAME = #{ entName }
+		     , ENT_PHONE = #{ entPhone }
+		     , ENT_EMAIL = #{ entEmail }
+		 WHERE ENT_NO = #{ entNo }
+	</update>
+	
+	<select id="selectPaymentHistory" resultMap="paymentResultMap">
+		SELECT
+			   A.ENT_PAYMENT_NO
+			 , A.ENT_PAYMENT_TIME
+			 , A.PLAN_NAME
+			 , B.PLAN_PRICE
+		  FROM TBL_ENT_PAYMENT_HISTORY A
+		  JOIN TBL_RATE_PLAN B ON (A.PLAN_NAME = B.PLAN_NAME)
+		 WHERE A.ENT_NO = #{ entNo }
+		   AND ROWNUM <![CDATA[ <= ]]> 10
+		 ORDER BY A.ENT_PAYMENT_TIME DESC
+	</select> 
+	
+	<select id="selectEntLoginMember" parameterType="string" resultMap="entResultMap">
+        SELECT 
+               A.ENT_NO
+             , A.ENT_NAME
+             , A.ENT_ID
+             , A.ENT_PWD
+             , A.ENT_PHONE
+             , A.ENT_EMAIL
+             , A.ENT_DROP_YN
+             , A.ENT_SANCTION_YN
+             , A.ENT_ACTIVE_YN
+          FROM TBL_ENT_INFO A
+         WHERE A.ENT_DROP_YN = 'N'
+           AND A.ENT_SANCTION_YN = 'N'
+           AND A.ENT_ACTIVE_YN = 'N'
+           AND A.ENT_ID = #{ entId }
+   </select>
+   
+   <insert id="insertEnt" parameterType="ent.model.dto.EntDTO">
+        INSERT 
+          INTO TBL_ENT_INFO A
+        (
+          A.ENT_NO
+        , A.ENT_NAME
+        , A.ENT_ID
+        , A.ENT_PWD
+        , A.ENT_EMAIL
+        , A.ENT_PHONE
+        )
+        VALUES 
+        (
+          SEQ_TBL_ENT_INFO_NO.NEXTVAL
+        , #{ entName }
+        , #{ entId }
+        , #{ entPwd }
+        , #{ entEmail }
+        , #{ entPhone }
+        )
+   </insert>
+   
+   <update id="updateEntPassword" parameterType="ent.model.dto.EntDTO">
+      UPDATE
+               TBL_ENT_INFO A
+           SET A.ENT_PWD = #{ entPwd }
+         WHERE A.ENT_ID = #{ entId }
+	</update>
+	
+	<insert id="insertEntLoginSuccessHistory" parameterType="ent.model.dto.EntDTO">
+		INSERT 
+          INTO TBL_ENT_LOGIN A
+        (
+          A.ENT_LOGIN_NO
+        , A.ENT_LOGIN_TIME
+        , A.ENT_LOGIN_SUCCESS_YN
+        , A.ENT_NO
+        )
+        VALUES 
+        (
+          SEQ_TBL_ENT_LOGIN.NEXTVAL
+        , SYSDATE
+        , 'Y'
+        , #{ entNo }
+        )
+	</insert>
+	
+	<select id="selectEntNo" parameterType="string" resultType="_int">
+        SELECT 
+               A.ENT_NO
+          FROM TBL_ENT_INFO A
+         WHERE A.ENT_DROP_YN = 'N'
+           AND A.ENT_SANCTION_YN = 'N'
+           AND A.ENT_ACTIVE_YN = 'N'
+           AND A.ENT_ID = #{ entId }
+	</select>
+	
+	<insert id="insertRegistApplicationEnt" parameterType="ent.model.dto.EntDTO">
+		INSERT 
+          INTO TBL_APPROVAL A
+        (
+          A.APPROVAL_NO
+        , A.ENT_NO
+        , A.ENT_YN
+        )
+        VALUES 
+        (
+          SEQ_TBL_APPROVAL.NEXTVAL
+        , #{ entNo }
+        , 'N'
+        )
+	</insert>
+	
+	<insert id="insertEntEnrollmentFile" parameterType="ent.model.dto.EntDTO">
+        INSERT 
+          INTO ENT_LICENSE A
+        (
+          A.ENT_NO
+        , A.ENT_LICENSE_PDF
+        , A.ENT_LICENSE_PATH
+        )
+        VALUES 
+        (
+          #{ entNo }
+        , #{ enrollmentFileName }
+        , 'C:\\sequence\\sequence\\web\\img\\enrollment\\'
+        )
+	</insert>
+	
+   
+	<insert id="entInsertProfile" parameterType="ent.model.dto.EntProfileDTO">
+       INSERT
+         INTO TBL_ENT_PROFILE A
+       (
+         A.ENT_PROF_NO
+	   , A.ENT_PHOTO
+       , A.ENT_INTRO
+       , A.ENT_RESUME
+       , A.ENT_NO
+       )
+       VALUES
+       (
+         SEQ_TBL_ENT_PROFILE_NO.NEXTVAL
+       , #{ entPhoto }
+       , #{ entIntro }
+       , #{ entResume }
+       , #{ entNo }
+       )
+   </insert>
+   
+   <select id="entSelectProfNo" parameterType="_int" resultType="_int">
+      SELECT
+      	     A.ENT_PROF_NO
+        FROM TBL_ENT_PROFILE A
+       WHERE ENT_NO = #{ entNo }
+   </select>
+   
+   <insert id="entInsertPhoto" parameterType="ent.model.dto.EntPhotoDTO">
+       INSERT
+         INTO TBL_ENT_PHOTO A
+       (
+         A.ENT_PHOTO_NO
+       , A.ENT_PHOTO_ORIGINAL_SAVED_PATH
+	   , A.ENT_PHOTO_SAVED_NAME
+	   , A.ENT_PHOTO_SAVED_PATH
+	   , A.ENT_PROF_NO
+       )
+       VALUES
+       (
+         SEQ_TBL_ENT_PHOTO_NO.NEXTVAL
+       , #{ photoOriginalSavedPath }
+       , #{ photoSavedName }
+       , #{ photoSavedPath }
+       , #{ entProfNo }
+       )
+   </insert>
+   
+   <select id="selectProfYn" parameterType="_int" resultMap="entProFileResultMap">
+   	    SELECT
+   	    	   A.ENT_PROF_NO
+   	    	 , A.ENT_PHOTO
+   	    	 , A.ENT_INTRO
+   	    	 , A.ENT_RESUME
+   	      FROM TBL_ENT_PROFILE A
+   	     WHERE ENT_NO = #{ entNo }
+   </select>
+   
+   <update id="entUpdateProfile" parameterType="ent.model.dto.EntProfileDTO">
+       UPDATE
+              TBL_ENT_PROFILE A
+	      SET A.ENT_PHOTO = #{ entPhoto }
+            , A.ENT_INTRO = #{ entIntro }
+            , A.ENT_RESUME = #{ entResume }
+        WHERE A.ENT_NO = #{ entNo }   
+   </update>
+   
+   <update id="entUpdatePhoto" parameterType="ent.model.dto.EntPhotoDTO">
+       UPDATE
+              TBL_ENT_PHOTO A
+          SET A.ENT_PHOTO_ORIGINAL_SAVED_PATH = #{ photoOriginalSavedPath }
+	        , A.ENT_PHOTO_SAVED_NAME = #{ photoSavedName }
+	        , A.ENT_PHOTO_SAVED_PATH = #{ photoSavedPath }
+        WHERE A.ENT_PROF_NO = #{ entProfNo }   
+   </update>
+   
+   <select id="selectProfileImg" parameterType="_int" resultType="string">
+   	    SELECT
+   	           A.ENT_PHOTO
+   	      FROM TBL_ENT_PROFILE A
+   	     WHERE ENT_NO = #{ entNo } 
+   </select>
+   
+   <select id="selectRatePlanByEntInfo" parameterType="_int" resultMap="ratePlanByEntResultMap">
+   	    SELECT
+   	    	   A.ENT_NO
+   	    	 , A.ENT_PAYMENT_NO
+   	    	 , A.PLAN_NAME
+   	    	 , A.PLAN_OFFER_COUNT
+   	    	 , A.PLAN_PROJECT_COUNT
+   	      FROM TBL_RATE_PLAN_BY_ENT A
+   	     WHERE A.ENT_NO = #{ entNo }
+   </select>
+   
+	<insert id="insertPaymentHistory" parameterType="ent.model.dto.PaymentHistoryDTO">
+   	    INSERT
+   	      INTO TBL_ENT_PAYMENT_HISTORY A
+   	    (
+   	      A.ENT_PAYMENT_NO
+	    , A.ENT_PAYMENT_TIME
+		, A.PLAN_NAME
+		, A.ENT_NO
+   	    )
+   	    VALUES
+   	    (
+   	      SEQ_TBL_ENT_PAYMENT_HISTORY.NEXTVAL
+   	    , SYSDATE
+   	    , #{ planName }
+   	    , #{ entNo }
+   	    )
+   </insert>
+   
+   <select id="selectPaymentNo" parameterType="_int" resultType="_int">
+   	    SELECT
+   	           A.ENT_PAYMENT_NO
+   	      FROM TBL_ENT_PAYMENT_HISTORY A
+   	     WHERE ENT_NO = #{ entNo }
+   	       AND ROWNUM <![CDATA[ <= ]]> 1
+   	     ORDER BY A.ENT_PAYMENT_NO DESC
+   </select>
+   
+   <select id="selectRatePlanInfo" parameterType="string" resultMap="ratePlanResultMap">
+   	    SELECT
+   	    	   A.PLAN_POSTING
+   	    	 , A.PLAN_OFFER
+   	    	 , A.PLAN_PROJECT
+   	      FROM TBL_RATE_PLAN A
+   	     WHERE A.PLAN_NAME = #{ planName }
+   </select>
+   
+   <update id="UpdateRatePlanByEnt" parameterType="ent.model.dto.RatePlanByEntDTO">
+   	    UPDATE
+              TBL_RATE_PLAN_BY_ENT A
+	      SET A.ENT_PAYMENT_NO = #{ entPaymentNo  }
+	        , A.PLAN_NAME = #{ planName }
+	        , A.PLAN_OFFER_COUNT = #{ planOfferCount }
+	        , A.PLAN_PROJECT_COUNT = #{ planProjectCount }
+        WHERE A.ENT_NO = #{ entNo }
+   </update>
+   
+   <select id="entSelectPasword" parameterType="_int" resultType="string">
+   	    SELECT
+   	    	   A.ENT_PWD
+   	      FROM TBL_ENT_INFO A
+   	     WHERE ENT_NO = #{ entNo }
+   </select>
+   
+</mapper>

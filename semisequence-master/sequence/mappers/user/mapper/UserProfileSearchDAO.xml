@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserProfileSearchDAO">
+	<resultMap type="user.model.dto.SearchUserProfileDTO" id="userProfileSearchResultMap">
+		<id property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userArea" column="USER_AREA"/>
+		<result property="userMiniTitle" column="USER_MINI_TITLE"/>
+		<result property="userMainText" column="USER_MAIN_TEXT"/>
+		<result property="userResume" column="USER_RESUME"/>
+		<result property="userOpenYN" column="USER_OPEN_YN"/>
+		
+		<collection property="job" javaType="user.model.dto.JobDTO">
+     	    <id property="jobNo" column="JOB_NO"/>
+     	    <result property="jobName" column="JOB_NAME"/>
+     	</collection>
+     	
+     	<collection property="userPhoto" javaType="user.model.dto.UserPhotoDTO">
+     	    <id property="userPhotoNo" column="USER_PHOTO_NO"/>
+     	    <result property="userPhotoSavedName" column="USER_PHOTO_SAVED_NAME"/>
+     	    <result property="userPhotoSavedPath" column="USER_PHOTO_SAVED_PATH"/>
+     	</collection>
+	</resultMap>
+	
+	<resultMap type="user.model.dto.SearchUserProfileDTO" id="userProfileDetailSearchResultMap">
+		<id property="userProfileNo" column="USER_PROFILE_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userArea" column="USER_AREA"/>
+		<result property="userMiniTitle" column="USER_MINI_TITLE"/>
+		<result property="userMainText" column="USER_MAIN_TEXT"/>
+		<result property="userResume" column="USER_RESUME"/>
+		<result property="userOpenYN" column="USER_OPEN_YN"/>
+		
+		<collection property="job" javaType="user.model.dto.JobDTO">
+     	    <id property="jobNo" column="JOB_NO"/>
+     	    <result property="jobName" column="JOB_NAME"/>
+     	</collection>
+     	
+     	<collection property="userPhoto" javaType="user.model.dto.UserPhotoDTO">
+     	    <id property="userPhotoNo" column="USER_PHOTO_NO"/>
+     	    <result property="userPhotoSavedName" column="USER_PHOTO_SAVED_NAME"/>
+     	    <result property="userPhotoSavedPath" column="USER_PHOTO_SAVED_PATH"/>
+     	</collection>
+     	
+     	<collection property="user" javaType="member.model.dto.MemberDTO">
+     	    <id property="userNo" column="USER_NO"/>
+     	    <result property="userPhone" column="USER_PHONE"/>
+     	    <result property="userEmail" column="USER_EMAIL"/>
+     	</collection>
+	</resultMap>
+	
+	<select id="selectTotalProfileCount" resultType="_int" parameterType="hashMap">
+	    SELECT
+	           COUNT(*)
+	      FROM TBL_USER_PROFILE A
+	      JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		 <where>
+	   		  <if test="searchCondition1 == 'job'">
+					<if test="searchCondition2 == '배우'">
+				         A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '촬영'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '연출'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '음향'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '조명'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '미술'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				    </if>
+				    <if test="searchCondition2 == '메이크업'">
+				        A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'  
+				    </if>
+				</if>
+				<if test="searchCondition1 == 'genre'">
+				      <if test="searchCondition2 == '영화'">
+				          A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '광고'">
+				          A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '다큐'">
+				          A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '드라마'">
+				          A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				      <if test="searchCondition2 == '기타'">
+				          A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+				      </if>
+				</if>
+			AND A.USER_OPEN_YN = 'Y'
+			
+	 	</where>
+	</select>
+	
+	<select id="selectUserProfileList" resultMap="userProfileSearchResultMap">
+	     SELECT
+	           A.USER_PROFILE_NO
+	         , A.USER_NAME
+	         , A.USER_BIRTH
+	         , A.USER_AREA
+	         , A.USER_MINI_TITLE
+	         , A.USER_MAIN_TEXT
+	         , A.USER_RESUME
+	         , A.USER_OPEN_YN
+	         , B.JOB_NO
+	         , B.JOB_NAME
+	         , C.USER_PHOTO_NO
+	         , C.USER_PHOTO_SAVED_NAME
+	         , C.USER_PHOTO_SAVED_PATH
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		  JOIN TBL_USER_PHOTO C ON (A.USER_PROFILE_NO = C.USER_PROFILE_NO)
+             <if test="searchCondition1 == 'job'">
+				</if>
+					<where>
+						<if test="searchCondition2 == '배우'">
+						     A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '촬영'">
+							A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '연출'">
+							A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '음향'">
+							 A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '조명'">
+							 A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '미술'">
+							A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '메이크업'">
+							A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'  
+						</if>
+
+						<if test="searchCondition2 == '영화'">
+						    A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '광고'">
+						    A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '다큐'">
+						    A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '드라마'">
+						    A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '기타'">
+						    A.USER_MINI_TITLE LIKE '%' || #{ searchValue } || '%'
+						</if>
+						<if test="searchCondition2 == '작성자'">
+						    A.USER_NAME LIKE '%' || #{ searchValue } || '%'
+						</if>
+					AND A.USER_OPEN_YN = 'Y'
+					
+				</where>
+			ORDER BY A.USER_PROFILE_NO DESC
+	</select>
+	
+	<select id="selectSearchUserProfileDetail" parameterType="int" resultMap="userProfileDetailSearchResultMap">
+		SELECT
+	           A.USER_PROFILE_NO
+	         , A.USER_NAME
+	         , A.USER_BIRTH
+	         , A.USER_AREA
+	         , A.USER_MINI_TITLE
+	         , A.USER_MAIN_TEXT
+	         , A.USER_RESUME
+	         , A.USER_OPEN_YN
+	         , A.USER_NO
+	         , B.JOB_NO
+	         , B.JOB_NAME
+	         , C.USER_PHOTO_NO
+	         , C.USER_PHOTO_SAVED_NAME
+	         , C.USER_PHOTO_SAVED_PATH
+	         , D.USER_NO
+	         , D.USER_PHONE
+	         , D.USER_EMAIL
+		  FROM TBL_USER_PROFILE A
+		  JOIN TBL_JOB_CATEGORY B ON (A.JOB_NO = B.JOB_NO)
+		  JOIN TBL_USER_PHOTO C ON (A.USER_PROFILE_NO = C.USER_PROFILE_NO)
+		  JOIN TBL_USER_INFO D ON (A.USER_NO = D.USER_NO)
+		 WHERE A.USER_PROFILE_NO = #{ userProfileNo }
+	</select>
+</mapper>

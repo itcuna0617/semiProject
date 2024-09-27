@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<environments default="dev">
+		<environment id="dev">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="net.sf.log4jdbc.DriverSpy"/>
+				<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"/>
+				<property name="username" value="C##SEQUENCE"/>
+				<property name="password" value="SEQUENCE"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="user/mapper/UserInfoMapper.xml"/>
+		<mapper resource="user/mapper/UserProfileMapper.xml"/>
+		<mapper resource="user/mapper/UserApplicationMapper.xml"/>
+		<mapper resource="user/mapper/UserOfferMapper.xml"/>
+		<mapper resource="user/mapper/UserProfileSearchDAO.xml"/>
+		<mapper resource="member/model/user/MemberDAO.xml"/>
+		<mapper resource="member/model/ent/EntDAO.xml"/>
+		<mapper resource="customerCenter/model/dao/NoticeDAO.xml"/>
+  		<mapper resource="customerCenter/model/dao/QuestionDAO.xml"/>
+  		<mapper resource="posting/model/dao/PostingDAO.xml"/>
+  		<mapper resource="application/model/dao/ApplicationDAO.xml"/>
+		<mapper resource="project/model/dao/ProjectDAO.xml"/>
+		<mapper resource="admin/mapper/AdminMapper.xml"/>
+		<mapper resource="admin/model/dao/NoticeDAObyAdmin.xml"/>
+	</mappers>
+</configuration>
